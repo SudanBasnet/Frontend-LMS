@@ -7,7 +7,8 @@ import { signUpNewUserAPI } from "../../services/authAPI.js";
 
 const initialState = {};
 const SignUpPage = () => {
-  const { form, setForm, handleOnChange } = useForm(initialState);
+  const { form, setForm, handleOnChange, passwordErrors } =
+    useForm(initialState);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ const SignUpPage = () => {
     const result = await signUpNewUserAPI(rest);
     console.log(result);
   };
+  console.log(passwordErrors);
   return (
     <div className="d-flex justify-content-center">
       <Form
@@ -30,8 +32,18 @@ const SignUpPage = () => {
         {signUpInputs.map((input) => (
           <CustomInput key={input.name} {...input} onChange={handleOnChange} />
         ))}
+        <div className="py-3">
+          <ul className="text-danger">
+            {passwordErrors.length > 0 &&
+              passwordErrors.map((msg) => <li key={msg}>{msg}</li>)}
+          </ul>
+        </div>
 
-        <Button variant="primary" type="submit">
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={passwordErrors.length}
+        >
           Submit
         </Button>
       </Form>
