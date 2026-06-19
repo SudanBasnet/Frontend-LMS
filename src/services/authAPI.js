@@ -9,7 +9,18 @@ export const signUpNewUserAPI = async (payload) => {
     url: authApiEP + "/register",
     method: "post",
     payload,
+    showToast: true,
   };
   const result = await apiProcessor(obj);
-  console.log(result);
+  return result;
+};
+
+//Activate new user
+export const activateNewUserAPI = async (payload) => {
+  const obj = {
+    url: authApiEP + "/activate-user",
+    method: "post",
+    payload,
+  };
+  return apiProcessor(obj);
 };

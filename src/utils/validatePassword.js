@@ -6,10 +6,10 @@ export const validator = (password = "", confirmPassword = "") => {
     error.push("Password must contain at least UpperCase letter");
 
   !/[a-z]/.test(password) &&
-    error.push("Password must contain at least UpperCase letter");
+    error.push("Password must contain at least LowerCase letter");
 
   !/[0-9]/.test(password) &&
-    error.push("Password must contain at least lowerCase letter");
+    error.push("Password must contain at least Number");
 
   !/[!@#$%^&*()_+<>?:{}|]/.test(password) &&
     error.push(
