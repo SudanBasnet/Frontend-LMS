@@ -1,3 +1,109 @@
 .main {
   min-height: 83vh;
 }
+
+.signin-page {
+  position: relative;
+  min-height: 100vh;
+  background: url(./assets/login-page.jpg) center no-repeat;
+  background-size: cover;
+}
+
+.signin-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.16), transparent 38%),
+    linear-gradient(120deg, rgba(4, 25, 17, 0.48), rgba(5, 45, 30, 0.24));
+}
+
+.signin-glass-card {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  box-shadow:
+    0 1.5rem 4rem rgba(0, 24, 15, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.48);
+}
+
+.signin-glass-form {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.63),
+    rgba(255, 255, 255, 0.38)
+  );
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.28);
+}
+
+.signin-field .form-label {
+  cursor: pointer;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+.signin-field:hover .form-label,
+.signin-field:focus-within .form-label {
+  color: #0f6b43;
+  transform: translateX(4px);
+}
+
+.signin-field:focus-within .form-label {
+  text-shadow: 0 0 14px rgba(25, 135, 84, 0.38);
+}
+
+.signin-form .form-control {
+  border: 1.5px solid rgba(25, 135, 84, 0.65);
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.signin-form .form-control:hover {
+  border-color: #198754;
+  background: rgba(255, 255, 255, 0.58);
+  transform: translateY(-1px);
+}
+
+.signin-form .form-control:focus {
+  border: 1.5px solid #146c43;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 0 0 0.25rem rgba(25, 135, 84, 0.18),
+    0 0.75rem 1.8rem rgba(8, 70, 43, 0.12);
+  transform: translateY(-1px);
+}
+
+.signin-form .form-check-input {
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.signin-form .form-check-input:hover,
+.signin-form .form-check-input:focus {
+  box-shadow: 0 0 0 0.22rem rgba(25, 135, 84, 0.18);
+  transform: scale(1.08);
+}
+
+.signin-form .btn {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.signin-form .btn:hover,
+.signin-form .btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 0.65rem 1.4rem rgba(25, 135, 84, 0.28);
+}

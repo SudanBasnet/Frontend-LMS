@@ -12,6 +12,7 @@ const handleOnChange = ({ e, form, setForm }) => {
 const useForm = (initialState) => {
   const [form, setForm] = useState(initialState);
   const [passwordErrors, setpasswordErrors] = useState([]);
+
   useEffect(() => {
     const errorArg = validator(form.password, form.confirmPassword);
     setpasswordErrors(errorArg);
