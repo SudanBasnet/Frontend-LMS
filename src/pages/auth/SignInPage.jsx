@@ -1,13 +1,21 @@
 import { Button, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
+import { signInUserAPI } from "../../services/authAPI";
 
 const initialState = {};
 const SignInPage = () => {
   const { form, handleOnChange } = useForm(initialState);
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     console.log(form);
+    if (form.email && form.password) {
+      const { payload } = await signInUserAPI(form);
+      sessionStorage.setItem("accessJWT", payload.accessJWT);
+      localStorage.setItem("refreshJWT", payload.refreshJWT);
+    } else {
+      alert("both inputs must be filled");
+    }
   };
 
   return (
