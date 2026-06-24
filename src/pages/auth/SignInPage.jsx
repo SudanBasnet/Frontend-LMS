@@ -2,6 +2,7 @@ import { Button, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "../../services/authAPI";
+import { fetchUserAPI } from "../../features/userAPI";
 
 const initialState = {};
 const SignInPage = () => {
@@ -11,8 +12,13 @@ const SignInPage = () => {
     console.log(form);
     if (form.email && form.password) {
       const { payload } = await signInUserAPI(form);
-      sessionStorage.setItem("accessJWT", payload.accessJWT);
-      localStorage.setItem("refreshJWT", payload.refreshJWT);
+      if (payload?.accessJWT) {
+        sessionStorage.setItem("accessJWT", payload.accessJWT);
+        localStorage.setItem("refreshJWT", payload.refreshJWT);
+        //fetch user api
+        const userInfo = await fetchUserAPI();
+        console.log(userInfo);
+      }
     } else {
       alert("both inputs must be filled");
     }
