@@ -2,11 +2,13 @@ import { Button, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "../../services/authAPI";
-import { fetchUserAPI } from "../../features/userAPI";
-
+import { fetchUserAPI } from "../../features/user/userAPI";
+import { fetchUserAction } from "../../features/user/userAction";
+import { useDispatch } from "react-redux";
 const initialState = {};
 const SignInPage = () => {
   const { form, handleOnChange } = useForm(initialState);
+  const dispatch = useDispatch();
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     console.log(form);
@@ -16,8 +18,7 @@ const SignInPage = () => {
         sessionStorage.setItem("accessJWT", payload.accessJWT);
         localStorage.setItem("refreshJWT", payload.refreshJWT);
         //fetch user api
-        const userInfo = await fetchUserAPI();
-        console.log(userInfo);
+        dispatch(fetchUserAction());
       }
     } else {
       alert("both inputs must be filled");

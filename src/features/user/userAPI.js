@@ -1,4 +1,4 @@
-import { apiProcessor } from "../services/api.js";
+import { apiProcessor } from "../../services/api.js";
 
 const apiBaseUrl = "http://localhost:8080";
 const userApiEP = apiBaseUrl + "/api/v1/user";
