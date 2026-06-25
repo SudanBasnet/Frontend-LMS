@@ -35,3 +35,14 @@ export const signInUserAPI = async (payload) => {
   };
   return apiProcessor(obj);
 };
+
+//request new accessJWT
+export const fetchNewAcessJWTAPI = async () => {
+  const obj = {
+    url: authApiEP + "/renew-jwt",
+    method: "get",
+    isPrivateCall: true,
+    isRefreshJWT: true,
+  };
+  return apiProcessor(obj);
+};

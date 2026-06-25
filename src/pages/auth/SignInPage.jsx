@@ -2,12 +2,14 @@ import { Button, Card, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "../../services/authAPI";
-import { fetchUserAPI } from "../../features/user/userAPI";
-import { fetchUserAction } from "../../features/user/userAction";
+import { autoLoginUser, fetchUserAction } from "../../features/user/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-const initialState = {};
+const initialState = {
+  email: "sdnbasnet@gmail.com",
+  password: "aaAA@@11",
+};
 
 const SignInPage = () => {
   const { form, handleOnChange } = useForm(initialState);
@@ -15,8 +17,8 @@ const SignInPage = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.userInfo);
   useEffect(() => {
-    user?._id && navigate("/users");
-  }, [user?._id, navigate]);
+    user?._id ? navigate("/users") : dispatch(autoLoginUser());
+  }, [user?._id, navigate, dispatch]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -64,6 +66,7 @@ const SignInPage = () => {
                 autoComplete="email"
                 className="py-2"
                 onChange={handleOnChange}
+                value={form.email}
               />
             </Form.Group>
 
@@ -82,6 +85,7 @@ const SignInPage = () => {
                 autoComplete="current-password"
                 className="py-2"
                 onChange={handleOnChange}
+                value={form.password}
               />
             </Form.Group>
 

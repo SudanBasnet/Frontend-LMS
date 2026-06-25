@@ -27,7 +27,6 @@ const UserLayout = () => {
               <main className="main">
                 <Outlet />
               </main>
-              t
             </Col>
           </Row>
         </Container>
