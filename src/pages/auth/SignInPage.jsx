@@ -1,14 +1,23 @@
 import { Button, Card, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "../../services/authAPI";
 import { fetchUserAPI } from "../../features/user/userAPI";
 import { fetchUserAction } from "../../features/user/userAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+
 const initialState = {};
+
 const SignInPage = () => {
   const { form, handleOnChange } = useForm(initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.userInfo);
+  useEffect(() => {
+    user?._id && navigate("/users");
+  }, [user?._id, navigate]);
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     console.log(form);
