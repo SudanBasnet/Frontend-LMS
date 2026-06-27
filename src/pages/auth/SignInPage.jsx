@@ -1,10 +1,10 @@
-import { Button, Card, Form } from "react-bootstrap";
+import { Button, Card, Form, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "../../services/authAPI";
 import { autoLoginUser, fetchUserAction } from "../../features/user/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const initialState = {
   email: "sdnbasnet@gmail.com",
@@ -15,9 +15,21 @@ const SignInPage = () => {
   const { form, handleOnChange } = useForm(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const showLoaderRef = useRef(true);
   const { user } = useSelector((state) => state.userInfo);
+
   useEffect(() => {
     user?._id ? navigate("/users") : dispatch(autoLoginUser());
+    if (
+      sessionStorage.getItem("accessJWT") ||
+      localStorage.getItem("refreshJWT")
+    ) {
+      setTimeout(() => {
+        showLoaderRef.current = false;
+      }, 2000);
+    } else {
+      showLoaderRef.current = false;
+    }
   }, [user?._id, navigate, dispatch]);
 
   const handleOnSubmit = async (e) => {
@@ -35,6 +47,13 @@ const SignInPage = () => {
       alert("both inputs must be filled");
     }
   };
+  if (showLoaderRef.current) {
+    return (
+      <div className="vh-100 d-flex justify-content-center align-items-center">
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="signin-page d-flex align-items-center justify-content-center p-3 p-md-5">

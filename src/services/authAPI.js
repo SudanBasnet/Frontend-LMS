@@ -1,4 +1,4 @@
-//all API related to signup,login, token
+//!all API related to signup,login, token
 
 import { apiProcessor } from "./api.js";
 const apiBaseUrl = "http://localhost:8080";
@@ -15,7 +15,7 @@ export const signUpNewUserAPI = async (payload) => {
   return result;
 };
 
-//Activate new user
+//!Activate new user
 export const activateNewUserAPI = async (payload) => {
   const obj = {
     url: authApiEP + "/activate-user",
@@ -25,7 +25,7 @@ export const activateNewUserAPI = async (payload) => {
   return apiProcessor(obj);
 };
 
-//Activate new user
+//!signin  new user
 export const signInUserAPI = async (payload) => {
   const obj = {
     url: authApiEP + "/login",
@@ -36,13 +36,23 @@ export const signInUserAPI = async (payload) => {
   return apiProcessor(obj);
 };
 
-//request new accessJWT
+//!request new accessJWT
 export const fetchNewAcessJWTAPI = async () => {
   const obj = {
     url: authApiEP + "/renew-jwt",
     method: "get",
     isPrivateCall: true,
     isRefreshJWT: true,
+  };
+  return apiProcessor(obj);
+};
+
+//!logout user
+export const logoutAPI = async () => {
+  const obj = {
+    url: authApiEP + "/logout",
+    method: "get",
+    isPrivateCall: true,
   };
   return apiProcessor(obj);
 };
