@@ -9,6 +9,7 @@ const getAccessJWT = () => {
 const getRefreshJWT = () => {
   return localStorage.getItem("refreshJWT");
 };
+
 export const apiProcessor = async ({
   url,
   method,

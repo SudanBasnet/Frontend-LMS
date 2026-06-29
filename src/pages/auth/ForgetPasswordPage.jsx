@@ -4,6 +4,7 @@ import CustomInput from "@components/CustomInput/CustomInput";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 import useForm from "../../hooks/useForm";
+import { requestPassResetOTPAPI } from "../../services/authAPI";
 const initialstate = {};
 
 const ForgetPasswordPage = () => {
@@ -12,15 +13,25 @@ const ForgetPasswordPage = () => {
   const [showPassResetForm, setshowPassResetForm] = useState(false);
 
   const { form, passwordErrors, handleOnChange } = useForm(initialstate);
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
+
     const email = emailRef.current.value;
+
     console.log(email);
-    setshowPassResetForm(true);
+
+    //callAPI
+    const response = await requestPassResetOTPAPI({ email });
+    if (response?.status === "success") {
+      setshowPassResetForm(true);
+    }
+    console.log(response);
   };
 
-  const handleOnPAsswordResetSubmit = (e) => {
+  const handleOnPAsswordResetSubmit = async (e) => {
     e.preventDefault();
+    //call API
+
     console.log(form);
   };
   return (
@@ -45,7 +56,7 @@ const ForgetPasswordPage = () => {
             <>
               {" "}
               <hr />
-              {/* Show this below oc=nce the otp is requested */}
+              {/* Show this below once the otp is requested */}
               <div>
                 <Alert variant="success">
                   We will send you an OTP if you registerd email exists in our
