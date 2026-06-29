@@ -2,7 +2,7 @@ import { Button, Card, Form, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "@services/authAPI";
-import { autoLoginUser, fetchUserAction } from "../../features/user/userAction";
+import { autoLoginUser, fetchUserAction } from "@features/user/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import CustomInput from "@components/CustomInput/CustomInput";
