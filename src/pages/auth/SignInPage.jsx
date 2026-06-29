@@ -1,10 +1,11 @@
 import { Button, Card, Form, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { signInUserAPI } from "../../services/authAPI";
+import { signInUserAPI } from "@services/authAPI";
 import { autoLoginUser, fetchUserAction } from "../../features/user/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
+import CustomInput from "@components/CustomInput/CustomInput";
 
 const initialState = {
   email: "sdnbasnet@gmail.com",
@@ -73,40 +74,41 @@ const SignInPage = () => {
           </div>
 
           <Form className="signin-form" onSubmit={handleOnSubmit}>
-            <Form.Group className="signin-field mb-3" controlId="signin-email">
-              <Form.Label>
-                Email address <span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                name="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                autoComplete="email"
-                className="py-2"
-                onChange={handleOnChange}
-                value={form.email}
-              />
-            </Form.Group>
+            <CustomInput
+              controlId="signin-email"
+              groupClassName="signin-field mb-3"
+              label={
+                <>
+                  Email address <span className="text-danger">*</span>
+                </>
+              }
+              name="email"
+              type="email"
+              required
+              placeholder="you@example.com"
+              autoComplete="email"
+              className="py-2"
+              onChange={handleOnChange}
+              value={form.email}
+            />
 
-            <Form.Group
-              className="signin-field mb-3"
+            <CustomInput
               controlId="signin-password"
-            >
-              <Form.Label>
-                Password <span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                name="password"
-                type="password"
-                required
-                placeholder="Enter your password"
-                autoComplete="current-password"
-                className="py-2"
-                onChange={handleOnChange}
-                value={form.password}
-              />
-            </Form.Group>
+              groupClassName="signin-field mb-3"
+              label={
+                <>
+                  Password <span className="text-danger">*</span>
+                </>
+              }
+              name="password"
+              type="password"
+              required
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              className="py-2"
+              onChange={handleOnChange}
+              value={form.password}
+            />
 
             <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
               <Form.Check

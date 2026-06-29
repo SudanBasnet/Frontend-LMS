@@ -1,9 +1,9 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import CustomInput from "../../components/CustomInput/CustomInput";
-import { signUpInputs } from "../../assets/custominputs/userSignupInputs.js";
+import { signUpInputs } from "@assets/custominputs/userSignupInputs.js";
 import useForm from "../../hooks/useForm.js";
-import { signUpNewUserAPI } from "../../services/authAPI.js";
+import { signUpNewUserAPI } from "@services/authAPI.js";
 
 const initialState = {};
 const SignUpPage = () => {

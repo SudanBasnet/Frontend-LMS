@@ -1,4 +1,4 @@
-import { fetchNewAcessJWTAPI } from "../../services/authAPI";
+import { fetchNewAcessJWTAPI } from "@services/authAPI";
 import { fetchUserAPI } from "./userAPI";
 import { setUser } from "./userSlice";
 

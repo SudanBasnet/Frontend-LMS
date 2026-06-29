@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
-import { activateNewUserAPI } from "../../services/authAPI";
+import { activateNewUserAPI } from "@services/authAPI";
 
 const VerifyUser = () => {
   const [response, setResponse] = useState({});
