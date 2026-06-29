@@ -2,20 +2,27 @@ import { Alert, Button, Card } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import CustomInput from "@components/CustomInput/CustomInput";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useForm from "../../hooks/useForm";
 const initialstate = {};
 
 const ForgetPasswordPage = () => {
   const emailRef = useRef("");
-  const { form, setForm, passwordErrors, handleOnChange } =
-    useForm(initialstate);
+
+  const [showPassResetForm, setshowPassResetForm] = useState(false);
+
+  const { form, passwordErrors, handleOnChange } = useForm(initialstate);
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     console.log(email);
+    setshowPassResetForm(true);
   };
-  console.log(form);
+
+  const handleOnPAsswordResetSubmit = (e) => {
+    e.preventDefault();
+    console.log(form);
+  };
   return (
     <div className="signin-page d-flex align-items-center justify-content-center p-3 p-md-5">
       <Card
@@ -34,85 +41,97 @@ const ForgetPasswordPage = () => {
             </p>
           </div>
 
-          <Form className="signin-form" onSubmit={handleOnSubmit}>
-            <CustomInput
-              controlId="signin-email"
-              groupClassName="signin-field mb-3"
-              label={
-                <>
-                  Email address <span className="text-danger">*</span>
-                </>
-              }
-              name="email"
-              type="email"
-              required
-              placeholder="Enter your email Address"
-              autoComplete="email"
-              className="py-2"
-              passRef={emailRef}
-            />
+          {showPassResetForm ? (
+            <>
+              {" "}
+              <hr />
+              {/* Show this below oc=nce the otp is requested */}
+              <div>
+                <Alert variant="success">
+                  We will send you an OTP if you registerd email exists in our
+                  system. Please check you junk/spam if you don't see your inbox
+                </Alert>
 
-            <Button
-              className="w-100 py-2 fw-semibold"
-              variant="success"
-              type="submit"
-            >
-              Request OTP
-            </Button>
-          </Form>
-          <hr />
-          {/* Show this below oc=nce the otp is requested */}
-
-          <div>
-            <Alert variant="success">
-              We will send you an OTP if you registerd email exists in our
-              system. Please check you junk/spam if you don't see your inbox
-            </Alert>
-
+                <Form
+                  className="signin-form"
+                  onSubmit={handleOnPAsswordResetSubmit}
+                >
+                  <CustomInput
+                    groupClassName="signin-field mb-3"
+                    label={
+                      <>
+                        OTP <span className="text-danger">*</span>
+                      </>
+                    }
+                    name="OTP"
+                    type="number"
+                    required
+                    placeholder="Enter your OTP"
+                    className="py-2"
+                    onChange={handleOnChange}
+                  />
+                  <CustomInput
+                    groupClassName="signin-field mb-3"
+                    label={
+                      <>
+                        New Password <span className="text-danger">*</span>
+                      </>
+                    }
+                    name="password"
+                    type="password"
+                    required
+                    placeholder="New Password"
+                    className="py-2"
+                    onChange={handleOnChange}
+                  />
+                  <CustomInput
+                    groupClassName="signin-field mb-3"
+                    label={
+                      <>
+                        Confirm Password <span className="text-danger">*</span>
+                      </>
+                    }
+                    name="confirmPassword"
+                    type="password"
+                    required
+                    placeholder="Confirm Password"
+                    className="py-2"
+                    onChange={handleOnChange}
+                  />
+                  <div className="py-2">
+                    <ul className="text-danger small mb-0">
+                      {passwordErrors.length > 0 &&
+                        passwordErrors.map((msg) => <li key={msg}>{msg}</li>)}
+                    </ul>
+                  </div>
+                  <Button
+                    className="w-100 py-2 fw-semibold"
+                    variant="success"
+                    type="submit"
+                    disabled={passwordErrors.length > 0}
+                  >
+                    Reset Password
+                  </Button>
+                </Form>
+              </div>
+            </>
+          ) : (
             <Form className="signin-form" onSubmit={handleOnSubmit}>
               <CustomInput
-                groupClassName="signin-field mb-3"
-                label={
-                  <>
-                    OTP <span className="text-danger">*</span>
-                  </>
-                }
-                name="OTP"
-                type="number"
-                required
-                placeholder="Enter your OTP"
-                className="py-2"
-                onChange={handleOnChange}
-              />
-              <CustomInput
                 controlId="signin-email"
                 groupClassName="signin-field mb-3"
                 label={
                   <>
-                    New Password <span className="text-danger">*</span>
+                    Email address <span className="text-danger">*</span>
                   </>
                 }
-                name="password"
-                type="password"
+                name="email"
+                type="email"
                 required
-                placeholder="New Password"
+                placeholder="Enter your email Address"
+                autoComplete="email"
                 className="py-2"
-                onChange={handleOnChange}
-              />
-              <CustomInput
-                controlId="signin-email"
-                groupClassName="signin-field mb-3"
-                label={
-                  <>
-                    Confirm Password <span className="text-danger">*</span>
-                  </>
-                }
-                name="confirm password"
-                type="password"
-                required
-                placeholder="Confirm Password"
-                className="py-2"
-                onChange={handleOnChange}
+                passRef={emailRef}
               />
 
               <Button
@@ -120,10 +139,10 @@ const ForgetPasswordPage = () => {
                 variant="success"
                 type="submit"
               >
-                Reset Password
+                Request OTP
               </Button>
             </Form>
-          </div>
+          )}
           <p className="text-center text-secondary mt-4 mb-0">
             Ready To Login{" "}
             <Link
