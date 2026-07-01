@@ -1,39 +1,84 @@
-import { Alert, Button, Card } from "react-bootstrap";
+import { Alert, Button, Card, Spinner } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import CustomInput from "@components/CustomInput/CustomInput";
-import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import useForm from "../../hooks/useForm";
-import { requestPassResetOTPAPI } from "../../services/authAPI";
+import {
+  requestPassResetOTPAPI,
+  resetPasswordAPI,
+} from "../../services/authAPI";
+
 const initialstate = {};
+const timeToRequestOTPAgain = 60;
 
 const ForgetPasswordPage = () => {
+  const navigate = useNavigate();
   const emailRef = useRef("");
 
   const [showPassResetForm, setshowPassResetForm] = useState(false);
+  const [isOtpPending, setIsOtpPending] = useState(false);
+  const [isBtnDisabled, setisBtnDisabled] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   const { form, passwordErrors, handleOnChange } = useForm(initialstate);
+  useEffect(() => {
+    if (counter <= 0) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const nextCounter = counter - 1;
+      setCounter(nextCounter);
+
+      if (isBtnDisabled && nextCounter === 0) {
+        setisBtnDisabled(false);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [counter, isBtnDisabled]);
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     const email = emailRef.current.value;
 
     console.log(email);
+    setIsOtpPending(true);
+    setisBtnDisabled(true);
 
     //callAPI
     const response = await requestPassResetOTPAPI({ email });
     if (response?.status === "success") {
       setshowPassResetForm(true);
+      setCounter(timeToRequestOTPAgain);
+    } else {
+      setisBtnDisabled(false);
     }
-    console.log(response);
+    setIsOtpPending(false);
   };
 
   const handleOnPAsswordResetSubmit = async (e) => {
     e.preventDefault();
     //call API
+    const email = emailRef.current.value;
 
-    console.log(form);
+    const payload = {
+      email,
+      otp: form.OTP,
+      password: form.password,
+    };
+    const response = await resetPasswordAPI(payload);
+    console.log(response);
+    if (response?.status === "success") {
+      //redirect user to login page in 3 seconds
+      setTimeout(() => {
+        navigate("/login");
+      }, 4500);
+    }
   };
+
   return (
     <div className="signin-page d-flex align-items-center justify-content-center p-3 p-md-5">
       <Card
@@ -52,7 +97,41 @@ const ForgetPasswordPage = () => {
             </p>
           </div>
 
-          {showPassResetForm ? (
+          <Form className="signin-form" onSubmit={handleOnSubmit}>
+            <CustomInput
+              controlId="signin-email"
+              groupClassName="signin-field mb-3"
+              label={
+                <>
+                  Email address <span className="text-danger">*</span>
+                </>
+              }
+              name="email"
+              type="email"
+              required
+              placeholder="Enter your email Address"
+              autoComplete="email"
+              className="py-2"
+              passRef={emailRef}
+            />
+
+            <Button
+              className="w-100 py-2 fw-semibold"
+              variant="success"
+              type="submit"
+              disabled={isBtnDisabled}
+            >
+              {isOtpPending ? (
+                <Spinner animation="border" size="sm" />
+              ) : counter > 0 ? (
+                `Request OTP in ${counter}`
+              ) : (
+                "Request OTP"
+              )}
+            </Button>
+          </Form>
+
+          {showPassResetForm && (
             <>
               {" "}
               <hr />
@@ -126,33 +205,6 @@ const ForgetPasswordPage = () => {
                 </Form>
               </div>
             </>
-          ) : (
-            <Form className="signin-form" onSubmit={handleOnSubmit}>
-              <CustomInput
-                controlId="signin-email"
-                groupClassName="signin-field mb-3"
-                label={
-                  <>
-                    Email address <span className="text-danger">*</span>
-                  </>
-                }
-                name="email"
-                type="email"
-                required
-                placeholder="Enter your email Address"
-                autoComplete="email"
-                className="py-2"
-                passRef={emailRef}
-              />
-
-              <Button
-                className="w-100 py-2 fw-semibold"
-                variant="success"
-                type="submit"
-              >
-                Request OTP
-              </Button>
-            </Form>
           )}
           <p className="text-center text-secondary mt-4 mb-0">
             Ready To Login{" "}
