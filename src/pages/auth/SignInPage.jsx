@@ -1,5 +1,5 @@
 import { Button, Card, Form, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "@services/authAPI";
 import { autoLoginUser, fetchUserAction } from "@features/user/userAction";
@@ -18,9 +18,13 @@ const SignInPage = () => {
   const navigate = useNavigate();
   const showLoaderRef = useRef(true);
   const { user } = useSelector((state) => state.userInfo);
+  const location = useLocation();
+  console.log(location);
+
+  const path = location?.state?.from ?? "/users";
 
   useEffect(() => {
-    user?._id ? navigate("/users") : dispatch(autoLoginUser());
+    user?._id ? navigate(path) : dispatch(autoLoginUser());
     if (
       sessionStorage.getItem("accessJWT") ||
       localStorage.getItem("refreshJWT")
