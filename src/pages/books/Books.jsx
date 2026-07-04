@@ -1,13 +1,15 @@
 import BookTable from "@components/tables/BookTable";
-import { adminFetchAllBookAPI } from "@features/book/bookAPI";
+import { adminFetchAllBookAction } from "@features/book/bookAction";
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 
 const Books = () => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    adminFetchAllBookAPI();
-  }, []);
+    dispatch(adminFetchAllBookAction());
+  }, [dispatch]);
   return (
     <div className="p-3">
       <h3>Books</h3>
