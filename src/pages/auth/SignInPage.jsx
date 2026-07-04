@@ -19,7 +19,6 @@ const SignInPage = () => {
   const showLoaderRef = useRef(true);
   const { user } = useSelector((state) => state.userInfo);
   const location = useLocation();
-  console.log(location);
 
   const path = location?.state?.from ?? "/users";
 
