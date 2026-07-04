@@ -2,12 +2,13 @@ import CustomInput from "@components/CustomInput/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { newbookInputs } from "@assets/custominputs/bookInputs";
 import useForm from "@hooks/useForm";
+import { postNewBookAction } from "@features/book/bookAction";
 const initialState = {};
 const NewBookForm = () => {
   const { form, setForm, handleOnChange } = useForm(initialState);
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    postNewBookAction(form);
   };
   return (
     <div className="p-4">

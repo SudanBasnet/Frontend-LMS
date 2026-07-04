@@ -23,6 +23,9 @@ export const apiProcessor = async ({
     if (isPrivateCall) {
       const token = isRefreshJWT ? getRefreshJWT() : getAccessJWT();
       headers.authorization = "bearer " + token;
+      if (!token) {
+        return alert("No Token");
+      }
     }
     const responsePending = axios({
       url,
