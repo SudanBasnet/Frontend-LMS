@@ -1,5 +1,9 @@
 .main {
   min-height: 83vh;
+}
+
+.user-main {
+  min-height: 83vh;
   width: calc(100% - 200px);
 }
 

@@ -23,7 +23,7 @@ const UserLayout = () => {
           </div>
 
           {/* main body */}
-          <main className="main">
+          <main className="user-main">
             <Outlet />
           </main>
         </div>
