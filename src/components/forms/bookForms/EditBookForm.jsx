@@ -10,12 +10,10 @@ const initialState = {};
 const EditBookForm = () => {
   const { _id } = useParams();
   const navigate = useNavigate();
-  console.log(_id);
+
   const { form, setForm, handleOnChange } = useForm(initialState);
 
   const { books } = useSelector((state) => state.bookInfo);
-
-  console.log(books);
 
   useEffect(() => {
     if (_id !== form._id) {

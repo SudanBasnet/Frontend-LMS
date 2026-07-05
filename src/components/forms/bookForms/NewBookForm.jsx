@@ -6,9 +6,14 @@ import { postNewBookAction } from "@features/book/bookAction";
 const initialState = {};
 const NewBookForm = () => {
   const { form, setForm, handleOnChange } = useForm(initialState);
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    postNewBookAction(form);
+
+    const result = await postNewBookAction(form);
+
+    if (result?.status === "success") {
+      setForm(initialState);
+    }
   };
   return (
     <div className="p-4">
@@ -16,7 +21,12 @@ const NewBookForm = () => {
       <hr />
       <Form className="m-2" onSubmit={handleOnSubmit}>
         {newbookInputs.map((input) => (
-          <CustomInput onChange={handleOnChange} key={input.name} {...input} />
+          <CustomInput
+            onChange={handleOnChange}
+            key={input.name}
+            {...input}
+            value={form[input.name] ?? ""}
+          />
         ))}
         <div className="d-grid">
           <Button type="submit"> Submit</Button>

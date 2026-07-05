@@ -11,7 +11,7 @@ const CustomInput = ({
   if (rest.type === "date") {
     valueData = value ? value.slice(0, 10) : null;
   }
-  console.log(valueData);
+
   return (
     <Form.Group className={groupClassName} controlId={controlId}>
       <Form.Label>{label}</Form.Label>
