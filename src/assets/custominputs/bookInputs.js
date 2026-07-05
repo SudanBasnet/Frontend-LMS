@@ -52,3 +52,67 @@ export const newbookInputs = [
     placeholder: "write description",
   },
 ];
+
+export const editbookInputs = [
+  {
+    label: "Title ",
+    name: "title",
+    type: "text",
+    required: true,
+    placeholder: "Atomic Habits",
+  },
+  {
+    label: "Slug ",
+    name: "slug",
+    type: "text",
+    required: true,
+    disabled: true,
+    placeholder: "Atomic Habits",
+  },
+  {
+    label: "Year",
+    name: "year",
+    type: "Number",
+    min: "1901",
+    max: new Date().getFullYear(),
+    required: true,
+    placeholder: "2018",
+  },
+  {
+    label: "Author",
+    name: "author",
+    type: "text",
+    required: true,
+    placeholder: "James Clear",
+  },
+  {
+    label: "Image URL*",
+    name: "imgUrl",
+    type: "url",
+    required: true,
+    placeholder: "https://example.com/images/atomic-habits.jpg",
+  },
+  {
+    label: "ISBN",
+    name: "isbn",
+    disabled: true,
+    type: "number",
+    required: true,
+    placeholder: "978073521129",
+  },
+  {
+    label: "Genre",
+    name: "genre",
+    type: "text",
+    required: true,
+    placeholder: "Self-help",
+  },
+  {
+    label: "Description",
+    name: "description",
+    type: "text",
+    required: true,
+    as: "textarea",
+    placeholder: "write description",
+  },
+];

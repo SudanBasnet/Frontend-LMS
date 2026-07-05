@@ -58,7 +58,7 @@ const BookTable = () => {
               <td>{title}</td>
               <td>YES, NO:Available date</td>
               <td>
-                <Link to="/users/edit-book">
+                <Link to={"/users/edit-book/" + _id}>
                   <Button variant="warning">EDIT </Button>
                 </Link>
               </td>
