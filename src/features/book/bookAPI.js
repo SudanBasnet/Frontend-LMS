@@ -20,7 +20,7 @@ export const postNewBookAPI = async (payload) => {
 //!Private API for admins
 export const adminFetchAllBookAPI = async () => {
   const obj = {
-    url: bookApiEP,
+    url: bookApiEP + "/admin",
     method: "get",
     isPrivateCall: true,
   };

@@ -1,12 +1,42 @@
-import { Button, Table } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Button, Form, Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const BookTable = () => {
+  const { books } = useSelector((state) => state.bookInfo);
+  const [displaybook, setdisplaybook] = useState([]);
+  useEffect(() => {
+    setdisplaybook(books);
+  }, [books]);
+
+  const handleOnSearch = (e) => {
+    const { value } = e.target;
+    const tempArg = books.filter((book) =>
+      book.title.toLowerCase().includes(value.toLowerCase()),
+    );
+    setdisplaybook(tempArg);
+  };
+
   return (
     <div>
+      <div className="d-flex justify-content-between mb-4">
+        <div>
+          {displaybook.length}{" "}
+          {displaybook.length > 1 ? "Books Found" : "Book Found"}{" "}
+        </div>
+        <div className="">
+          <Form.Control
+            placeholder="Search book by name"
+            onChange={handleOnSearch}
+          />
+        </div>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>#</th>
+            <th>Status</th>
             <th>Thumbnail</th>
             <th>Name</th>
             <th>Is Available</th>
@@ -14,21 +44,26 @@ const BookTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGLFQCXk8545LGv1QxG27KKNhdcmopZlZOGP6PfhuKpYXKl9SEGKdIi7_b&s=10"
-                alt=""
-                width="60px"
-              />
-            </td>
-            <td>JS book</td>
-            <td>YES, NO:Available date</td>
-            <td>
-              <Button variant="warning">EDIT </Button>
-            </td>
-          </tr>
+          {displaybook.map(({ _id, status, title, imgUrl }, i) => (
+            <tr key={_id}>
+              <td>{i + 1}</td>
+              <td
+                className={status === "active" ? "text-success" : "text-danger"}
+              >
+                {status}
+              </td>
+              <td>
+                <img src={imgUrl} alt="" width="60px" />
+              </td>
+              <td>{title}</td>
+              <td>YES, NO:Available date</td>
+              <td>
+                <Link to="/users/edit-book">
+                  <Button variant="warning">EDIT </Button>
+                </Link>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>
