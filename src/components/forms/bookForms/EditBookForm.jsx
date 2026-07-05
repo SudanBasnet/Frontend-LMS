@@ -26,17 +26,53 @@ const EditBookForm = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    postNewBookAction(form);
+    const {
+      addedBy,
+      createdAt,
+      lastupdatedby,
+      slug,
+      updatedAt,
+      __v,
+      isbn,
+      ...rest
+    } = form;
+    console.log(form);
   };
+  console.log(form);
 
   return (
     <div className="p-4">
       <h3> New Books Adding Page</h3>
       <hr />
       <Form className="m-2" onSubmit={handleOnSubmit}>
+        <Form.Check
+          name="status"
+          type="switch"
+          id="custom-switch"
+          label={form.status?.toUpperCase()}
+          onChange={handleOnChange}
+        />
         {editbookInputs.map((input) => (
-          <CustomInput onChange={handleOnChange} key={input.name} {...input} />
+          <CustomInput
+            onChange={handleOnChange}
+            key={input.name}
+            {...input}
+            value={form[input.name] ?? ""}
+          />
         ))}
+
+        <div className="mb-3">
+          <hr />
+          <h4>Additional Information</h4>
+          <div className="mb-2">
+            Added by: {form.addedBy?.name} <br />
+            Date: {form.createdAt}
+          </div>
+          <div>
+            Last Updated by: {form.lastupdatedby?.name} <br />
+            Date: {form.updatedAt}
+          </div>
+        </div>
         <div className="d-grid">
           <Button type="submit"> Submit</Button>
         </div>
