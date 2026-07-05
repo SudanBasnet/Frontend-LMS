@@ -27,3 +27,16 @@ export const adminFetchAllBookAPI = async () => {
   const result = await apiProcessor(obj);
   return result;
 };
+
+//!update book API
+export const updateBookAPI = async (payload) => {
+  const obj = {
+    url: bookApiEP,
+    method: "put",
+    isPrivateCall: true,
+    showToast: true,
+    payload,
+  };
+  const result = await apiProcessor(obj);
+  return result;
+};

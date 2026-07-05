@@ -2,10 +2,10 @@ import CustomInput from "@components/CustomInput/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { editbookInputs } from "@assets/custominputs/bookInputs";
 import useForm from "@hooks/useForm";
-import { postNewBookAction } from "@features/book/bookAction";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { updateBookAPI } from "@features/book/bookAPI";
 const initialState = {};
 const EditBookForm = () => {
   const { _id } = useParams();
@@ -24,7 +24,7 @@ const EditBookForm = () => {
     }
   }, [setForm]);
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const {
       addedBy,
@@ -34,9 +34,13 @@ const EditBookForm = () => {
       updatedAt,
       __v,
       isbn,
+      available,
+      averagerating,
       ...rest
     } = form;
-    console.log(form);
+
+    const result = await updateBookAPI(rest);
+    console.log(result);
   };
   console.log(form);
 
@@ -51,6 +55,7 @@ const EditBookForm = () => {
           id="custom-switch"
           label={form.status?.toUpperCase()}
           onChange={handleOnChange}
+          checked={form.status === "active"}
         />
         {editbookInputs.map((input) => (
           <CustomInput
