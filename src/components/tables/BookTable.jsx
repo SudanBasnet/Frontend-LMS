@@ -6,6 +6,12 @@ import { Link } from "react-router-dom";
 const BookTable = () => {
   const { books } = useSelector((state) => state.bookInfo);
   const [displaybook, setdisplaybook] = useState([]);
+  const apiBaseUrl = import.meta.env.VITE_BASE_URL;
+  const getImageUrl = (imgUrl = "") =>
+    imgUrl.startsWith("public")
+      ? apiBaseUrl + imgUrl.slice("public".length)
+      : imgUrl;
+
   useEffect(() => {
     setdisplaybook(books);
   }, [books]);
@@ -59,7 +65,11 @@ const BookTable = () => {
                   {status}
                 </td>
                 <td>
-                  <img src={imgUrl} alt="" width="60px" />
+                  <img
+                    src={getImageUrl(imgUrl)}
+                    alt=""
+                    width="60px"
+                  />
                 </td>
                 <td>{title}</td>
                 <td>

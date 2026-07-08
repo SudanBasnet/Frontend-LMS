@@ -5,6 +5,7 @@ import { setBook } from "./bookSlice";
 export const postNewBookAction = async (payload) => {
   const book = await postNewBookAPI(payload);
   console.log(book);
+  return book;
 };
 
 //!Fetch all books

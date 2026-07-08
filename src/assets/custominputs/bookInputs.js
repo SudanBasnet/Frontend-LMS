@@ -22,13 +22,13 @@ export const newbookInputs = [
     required: true,
     placeholder: "James Clear",
   },
-  {
-    label: "Image URL*",
-    name: "imgUrl",
-    type: "url",
-    required: true,
-    placeholder: "https://example.com/images/atomic-habits.jpg",
-  },
+  // {
+  //   label: "Image URL*",
+  //   name: "imgUrl",
+  //   type: "url",
+  //   required: true,
+  //   placeholder: "https://example.com/images/atomic-habits.jpg",
+  // },
   {
     label: "ISBN",
     name: "isbn",
