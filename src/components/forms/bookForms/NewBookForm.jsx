@@ -4,12 +4,15 @@ import { newbookInputs } from "@assets/custominputs/bookInputs";
 import useForm from "@hooks/useForm";
 import { postNewBookAction } from "@features/book/bookAction";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 const initialState = {};
 
 const NewBookForm = () => {
   const { form, setForm, handleOnChange } = useForm(initialState);
+  const dispatch = useDispatch();
 
   const [image, setImage] = useState();
+  const [fileInputKey, setFileInputKey] = useState(Date.now());
 
   const handleOnImageSelect = (e) => {
     setImage(e.target.files[0]);
@@ -25,11 +28,12 @@ const NewBookForm = () => {
     }
     formData.append("image", image);
 
-    const result = await postNewBookAction(formData);
+    const result = await dispatch(postNewBookAction(formData));
 
     if (result?.status === "success") {
       setForm(initialState);
       setImage();
+      setFileInputKey(Date.now());
       e.currentTarget.reset();
     }
   };
@@ -48,6 +52,7 @@ const NewBookForm = () => {
         ))}
         <Form.Group className="mb-3">
           <Form.Control
+            key={fileInputKey}
             type="file"
             name="image"
             accept="image/jpeg,image/png,image/gif,image/webp"

@@ -2,9 +2,12 @@ import { adminFetchAllBookAPI, postNewBookAPI } from "./bookAPI";
 import { setBook } from "./bookSlice";
 
 //!create new book
-export const postNewBookAction = async (payload) => {
+export const postNewBookAction = (payload) => async (dispatch) => {
   const book = await postNewBookAPI(payload);
   console.log(book);
+  if (book?.status === "success") {
+    dispatch(adminFetchAllBookAction());
+  }
   return book;
 };
 

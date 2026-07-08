@@ -9,7 +9,7 @@ const CustomInput = ({
 }) => {
   let valueData = value;
   if (rest.type === "date") {
-    valueData = value ? value.slice(0, 10) : null;
+    valueData = value ? value.slice(0, 10) : "";
   }
 
   return (

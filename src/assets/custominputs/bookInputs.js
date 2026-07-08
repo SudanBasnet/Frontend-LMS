@@ -34,7 +34,7 @@ export const newbookInputs = [
     name: "isbn",
     type: "number",
     required: true,
-    placeholder: "978073521129",
+    placeholder: "9780735211292",
   },
   {
     label: "Genre",
@@ -80,12 +80,12 @@ export const editbookInputs = [
     type: "text",
     required: true,
   },
-  {
-    label: "Image URL*",
-    name: "imgUrl",
-    type: "url",
-    required: true,
-  },
+  // {
+  //   label: "Image URL*",
+  //   name: "imgUrl",
+  //   type: "url",
+  //   required: true,
+  // },
   {
     label: "ISBN",
     name: "isbn",
