@@ -1,6 +1,7 @@
 import { apiProcessor } from "../../services/api.js";
 
-const apiBaseUrl = "http://localhost:8080";
+// const apiBaseUrl = "http://localhost:8080";
+const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 const userApiEP = apiBaseUrl + "/api/v1/user";
 
 export const fetchUserAPI = async () => {

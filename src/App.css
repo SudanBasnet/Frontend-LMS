@@ -2,6 +2,11 @@
   min-height: 83vh;
 }
 
+.user-main {
+  min-height: 83vh;
+  width: calc(100% - 200px);
+}
+
 .signin-page {
   position: relative;
   min-height: 100vh;
@@ -14,7 +19,11 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.16), transparent 38%),
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.16),
+      transparent 38%
+    ),
     linear-gradient(120deg, rgba(4, 25, 17, 0.48), rgba(5, 45, 30, 0.24));
 }
 
