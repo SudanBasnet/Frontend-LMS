@@ -1,6 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/LMSlogo.png";
@@ -13,6 +14,8 @@ import { FiLogOut } from "react-icons/fi";
 import { logoutAPI } from "../../services/authAPI";
 import { setUser } from "../../features/user/userSlice";
 import { useState } from "react";
+import { InputGroup } from "react-bootstrap";
+import { FaSearch } from "react-icons/fa";
 
 const Header = () => {
   const { user } = useSelector((state) => state.userInfo);
@@ -46,40 +49,55 @@ const Header = () => {
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Link className="nav-link" to="/">
-              <IoHomeOutline /> Home
-            </Link>
-            {user?._id ? (
-              <>
-                <Link className="nav-link" to="/users">
-                  <LuGauge /> Dashboard
-                </Link>
-                <Link
-                  className="nav-link"
-                  to="/"
-                  onClick={handleOnLogout}
-                  aria-disabled={isLoggingOut}
-                >
-                  {isLoggingOut ? (
-                    <Spinner animation="border" size="sm" />
-                  ) : (
-                    <FiLogOut />
-                  )}
-                  {isLoggingOut ? " Logging out..." : " Logout"}
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link className="nav-link" to="/signup">
-                  <IoCreate /> Sign Up
-                </Link>
-                <Link className="nav-link" to="/login">
-                  <IoIosLogIn /> LogIn
-                </Link>
-              </>
-            )}
-          </Nav>
+          <div className="w-100 d-flex justify-content-between flex-column flex-md-row">
+            <div>sd</div>
+            <Form style={{ width: "40%" }}>
+              <InputGroup className="">
+                <Form.Control
+                  placeholder="Search your Book"
+                  aria-label="Search your Book"
+                  aria-describedby="basic-addon2"
+                />
+                <InputGroup.Text id="basic-addon2">
+                  <FaSearch />
+                </InputGroup.Text>
+              </InputGroup>
+            </Form>
+            <Nav className="">
+              <Link className="nav-link" to="/">
+                <IoHomeOutline /> Home
+              </Link>
+              {user?._id ? (
+                <>
+                  <Link className="nav-link" to="/users">
+                    <LuGauge /> Dashboard
+                  </Link>
+                  <Link
+                    className="nav-link"
+                    to="/"
+                    onClick={handleOnLogout}
+                    aria-disabled={isLoggingOut}
+                  >
+                    {isLoggingOut ? (
+                      <Spinner animation="border" size="sm" />
+                    ) : (
+                      <FiLogOut />
+                    )}
+                    {isLoggingOut ? " Logging out..." : " Logout"}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link className="nav-link" to="/signup">
+                    <IoCreate /> Sign Up
+                  </Link>
+                  <Link className="nav-link" to="/login">
+                    <IoIosLogIn /> LogIn
+                  </Link>
+                </>
+              )}
+            </Nav>
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>
