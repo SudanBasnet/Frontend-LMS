@@ -10,18 +10,20 @@ const CustomCard = ({
   slug = "book-title",
 }) => {
   return (
-    <Card className="shadow-lg w-100">
-      <div className="m-2">
-        <Card.Img variant="top" src={imgUrl} className="rounded" />
+    <Card className="book-card w-100 h-100">
+      <div className="book-card-cover">
+        <img src={imgUrl} alt={title} className="book-card-img" />
       </div>
 
-      <Card.Body className="text-center">
-        <Card.Title>{title}</Card.Title>
-        <Card.Text>
+      <Card.Body className="book-card-body">
+        <Card.Title className="book-card-title">{title}</Card.Title>
+        <Card.Text className="book-card-meta">
           {author} - {year}
         </Card.Text>
-        <Link to={slug}>
-          <Button variant="dark">View Details</Button>
+        <Link to={slug} className="mt-auto">
+          <Button variant="dark" className="w-100">
+            View Details
+          </Button>
         </Link>
       </Card.Body>
     </Card>
