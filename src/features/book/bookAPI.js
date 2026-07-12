@@ -36,6 +36,15 @@ export const fetchAllPublicBookAPI = async () => {
   const result = await apiProcessor(obj);
   return result;
 };
+//!public API for public single book
+export const fetchsinglePublicBookAPI = async (slug) => {
+  const obj = {
+    url: bookApiEP + "/public/" + slug,
+    method: "get",
+  };
+  const result = await apiProcessor(obj);
+  return result;
+};
 
 //!update book API
 export const updateBookAPI = async (payload) => {

@@ -20,7 +20,7 @@ const CustomCard = ({
         <Card.Text className="book-card-meta">
           {author} - {year}
         </Card.Text>
-        <Link to={slug} className="mt-auto">
+        <Link to={"/book/" + slug} className="mt-auto">
           <Button variant="dark" className="w-100">
             View Details
           </Button>
