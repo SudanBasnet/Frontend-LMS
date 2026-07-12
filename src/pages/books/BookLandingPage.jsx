@@ -1,23 +1,40 @@
+import Star from "@components/star/Star";
 import { fetchSinglePublicBookAction } from "@features/book/bookAction";
 import { useEffect, useState } from "react";
-import { Breadcrumb, Col, Container, Row } from "react-bootstrap";
+import {
+  Alert,
+  Breadcrumb,
+  Button,
+  Col,
+  Container,
+  Row,
+  Spinner,
+  Tab,
+  Tabs,
+} from "react-bootstrap";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 const BookLandingPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const { publicBooks } = useSelector((state) => state.bookInfo);
-  const [book, setBook] = useState({});
+  const { selectedBook } = useSelector((state) => state.bookInfo);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showUrl, setshowUrl] = useState(0);
 
   useEffect(() => {
-    //!first approach locally
-    // const selectedBook = publicBooks?.find((book) => book.slug === slug);
-    // setBook(selectedBook);
-    // console.log(book.imgUrl);
-    //! second approach fetch from server
-    dispatch(fetchSinglePublicBookAction(slug));
-  }, [publicBooks, dispatch, slug]);
+    const fetchBook = async () => {
+      setIsLoading(true);
+      try {
+        await dispatch(fetchSinglePublicBookAction(slug));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBook();
+  }, [dispatch, slug]);
 
   return (
     <Container>
@@ -30,25 +47,100 @@ const BookLandingPage = () => {
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/all-books" }}>
               All Books
             </Breadcrumb.Item>
-            <Breadcrumb.Item active>{book?.title}</Breadcrumb.Item>
+            <Breadcrumb.Item active>{selectedBook?.title}</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <div>
-            <img
-              src={import.meta.env.VITE_BASE_URL + book?.imgUrl?.slice(6)}
-              alt=""
-            />
-          </div>
-          Img section
-        </Col>
-        <Col>Book Info section</Col>
-      </Row>
-      <Row>
-        <Col>Bottom SEction</Col>
-      </Row>
+      {isLoading && (
+        <Row>
+          <Col className="text-center py-5">
+            <Spinner animation="border" variant="primary" role="status">
+              <span className="visually-hidden">Loading book...</span>
+            </Spinner>
+          </Col>
+        </Row>
+      )}
+
+      {!isLoading && !selectedBook?._id && (
+        <Row>
+          <Col>
+            <Alert variant="danger">
+              The book is not available , Please contact Admin
+            </Alert>
+          </Col>
+        </Row>
+      )}
+
+      {!isLoading && selectedBook?._id && (
+        <>
+          <Row>
+            <Col md={4}>
+              <div className="mb-4" style={{ height: "400px" }}>
+                <img
+                  src={
+                    import.meta.env.VITE_BASE_URL +
+                    selectedBook?.imageList[showUrl].slice(6)
+                  }
+                  alt={selectedBook.title}
+                  // width={"100%"}
+                  className="h-100 w-100 object-fit"
+                />
+              </div>
+              {/* Scrollable thumbnail */}
+
+              <div className="d-flex overflow-auto gap-2">
+                {selectedBook.imageList?.map((url, i) => (
+                  <img
+                    src={import.meta.env.VITE_BASE_URL + url.slice(6)}
+                    key={url}
+                    width={"80px"}
+                    className="img-thumbnail"
+                    onClick={() => setshowUrl(i)}
+                    style={{ cursor: "pointer" }}
+                  />
+                ))}
+              </div>
+            </Col>
+            <Col>
+              <div className="d-flex flex-column justify-content-between h-100">
+                <div className="top">
+                  <h1>{selectedBook.title}</h1>
+                  <div className="fw-bolder">
+                    {selectedBook.author} - {selectedBook.year}
+                  </div>
+                  <div className="my-3 d-flex gap-2">
+                    <span>{selectedBook.genre}</span> |{" "}
+                    <span>
+                      <Star avgRating={2.5} totalReviews={334} />
+                    </span>
+                  </div>
+                  <div>{selectedBook.description.slice(0, 300)}...........</div>
+                </div>
+
+                <div className="bottom">
+                  <hr />
+                  <div className="d-grid mb-3">
+                    <Button variant="dark">Add to Borrowing List</Button>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Row className="mt-5 mb-5">
+            <Col className="border p-3 rounded">
+              <h3 className="margin-auto mt-5 text-center">More Details</h3>
+              <Tabs defaultActiveKey="description" className="mb-3">
+                <Tab eventKey="description" title="description">
+                  <div>{selectedBook.description}</div>
+                </Tab>
+                <Tab eventKey="reviews" title="reviews">
+                  Tab content for Reviews
+                </Tab>
+              </Tabs>
+            </Col>
+          </Row>
+        </>
+      )}
     </Container>
   );
 };
