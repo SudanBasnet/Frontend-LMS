@@ -1,4 +1,5 @@
 import CustomCard, { CustomListCard } from "@components/customCard/CustomCard";
+import CustomPagination from "@components/customPagination/CustomPagination";
 import { fetchAllPublicBookAction } from "@features/book/bookAction";
 import { useEffect, useState } from "react";
 import {
@@ -7,19 +8,30 @@ import {
   ButtonGroup,
   Col,
   Container,
+  Pagination,
   Row,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+const booksPerScreen = 8;
+
 const AllBooks = () => {
   const dispatch = useDispatch();
   const { publicBooks } = useSelector((state) => state.bookInfo);
   const [view, setView] = useState("card");
+  const [active, setActive] = useState(1);
+  const pages = Math.ceil(publicBooks.length / booksPerScreen);
 
   useEffect(() => {
     dispatch(fetchAllPublicBookAction());
   }, [dispatch]);
+
+  //! Pagination calculation
+  const startIndex = (active - 1) * booksPerScreen;
+  const endIndex = startIndex + booksPerScreen;
+
+  const displayBooks = publicBooks.slice(startIndex, endIndex);
 
   return (
     <Container>
@@ -38,7 +50,7 @@ const AllBooks = () => {
       <Row>
         <Col>
           <div className="mb-3 d-flex justify-content-between align-items-center">
-            <div>{publicBooks.length} Books Found!</div>
+            <div>{displayBooks.length} Books Found!</div>
             <div>
               {" "}
               <ButtonGroup aria-label="Basic example">
@@ -58,7 +70,7 @@ const AllBooks = () => {
             </div>
           </div>
           <div className="row g-3">
-            {publicBooks.map((book) => (
+            {displayBooks.map((book) => (
               <div
                 className={
                   view === "card"
@@ -75,7 +87,11 @@ const AllBooks = () => {
               </div>
             ))}
           </div>
-          <div>Pagination To do</div>
+          <CustomPagination
+            active={active}
+            setActive={setActive}
+            pages={pages}
+          />
         </Col>
       </Row>
     </Container>

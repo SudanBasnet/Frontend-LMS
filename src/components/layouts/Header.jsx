@@ -9,7 +9,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoIosLogIn } from "react-icons/io";
 import { IoCreate } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { LuGauge } from "react-icons/lu";
+import { LuBookOpen, LuGauge } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { logoutAPI } from "../../services/authAPI";
 import { setUser } from "../../features/user/userSlice";
@@ -67,11 +67,15 @@ const Header = () => {
               <Link className="nav-link" to="/">
                 <IoHomeOutline /> Home
               </Link>
+              <Link className="nav-link" to="/all-books">
+                <LuBookOpen /> Books
+              </Link>
               {user?._id ? (
                 <>
                   <Link className="nav-link" to="/users">
                     <LuGauge /> Dashboard
                   </Link>
+
                   <Link
                     className="nav-link"
                     to="/"
