@@ -1,5 +1,5 @@
 import Star from "@components/star/Star";
-import { formatDistance, formatDistanceToNow, subDays } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 const reviews = [
   {
     title: "this is awesome book",

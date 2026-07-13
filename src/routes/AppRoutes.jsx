@@ -17,6 +17,7 @@ import {
 } from "../pages/index";
 import DefaultLayout from "@components/layouts/DefaultLayout";
 import UserLayout from "@components/layouts/UserLayout";
+import AllBooks from "@pages/books/AllBooks";
 
 const AppRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AppRoutes = () => {
 
       <Route path="/" element={<DefaultLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="all-books" element={<AllBooks />} />
         <Route path="book/:slug" element={<BookLandingPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/activate-user" element={<VerifyUser />} />
