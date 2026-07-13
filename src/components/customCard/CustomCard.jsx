@@ -31,3 +31,35 @@ const CustomCard = ({
 };
 
 export default CustomCard;
+
+export const CustomListCard = ({
+  imgUrl = a,
+  title = "Book Title",
+  year = "2026",
+  author = "Sudan Basnet",
+  slug = "book-title",
+  description = "",
+}) => {
+  return (
+    <Card className="book-list-card d-flex flex-row w-100">
+      <div className="book-list-card-cover">
+        <img src={imgUrl} alt={title} className="book-list-card-img" />
+      </div>
+
+      <Card.Body className="book-list-card-body">
+        <Card.Title>{title}</Card.Title>
+        <Card.Text className="text-muted mb-2">
+          {author} - {year}
+        </Card.Text>
+        {description && (
+          <Card.Text className="book-list-card-description">
+            {description}
+          </Card.Text>
+        )}
+        <Link to={"/book/" + slug} className="mt-auto align-self-start d-grid">
+          <Button variant="dark">View Details</Button>
+        </Link>
+      </Card.Body>
+    </Card>
+  );
+};

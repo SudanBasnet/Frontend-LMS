@@ -232,3 +232,52 @@
   line-height: 1.45;
   color: #64748b;
 }
+
+/* Book list cards */
+.book-list-card {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(15, 23, 42, 0.08);
+}
+
+.book-list-card-cover {
+  flex: 0 0 160px;
+  width: 160px;
+  height: 190px;
+  padding: 0.75rem;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-list-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.book-list-card-body {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.book-list-card-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (max-width: 575.98px) {
+  .book-list-card-cover {
+    flex-basis: 120px;
+    width: 120px;
+    height: 170px;
+  }
+}

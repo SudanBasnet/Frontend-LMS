@@ -1,6 +1,6 @@
-import CustomCard from "@components/customCard/CustomCard";
+import CustomCard, { CustomListCard } from "@components/customCard/CustomCard";
 import { fetchAllPublicBookAction } from "@features/book/bookAction";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Breadcrumb,
   Button,
@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 const AllBooks = () => {
   const dispatch = useDispatch();
   const { publicBooks } = useSelector((state) => state.bookInfo);
+  const [view, setView] = useState("card");
 
   useEffect(() => {
     dispatch(fetchAllPublicBookAction());
@@ -41,15 +42,36 @@ const AllBooks = () => {
             <div>
               {" "}
               <ButtonGroup aria-label="Basic example">
-                <Button variant="secondary">Card</Button>
-                <Button variant="dark">List</Button>
+                <Button
+                  variant={view === "card" ? "dark" : "secondary"}
+                  onClick={() => setView("card")}
+                >
+                  Card
+                </Button>
+                <Button
+                  variant={view === "list" ? "dark" : "secondary"}
+                  onClick={() => setView("list")}
+                >
+                  List
+                </Button>
               </ButtonGroup>
             </div>
           </div>
           <div className="row g-3">
             {publicBooks.map((book) => (
-              <div className="col-12 col-sm-6 col-lg-3 d-flex" key={book._id}>
-                <CustomCard {...book} />
+              <div
+                className={
+                  view === "card"
+                    ? "col-12 col-sm-6 col-lg-3 d-flex"
+                    : "col-12 d-flex"
+                }
+                key={book._id}
+              >
+                {view === "card" ? (
+                  <CustomCard {...book} />
+                ) : (
+                  <CustomListCard {...book} />
+                )}
               </div>
             ))}
           </div>
