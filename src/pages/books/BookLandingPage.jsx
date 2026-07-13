@@ -1,3 +1,4 @@
+import Reviews from "@components/reviews/Reviews";
 import Star from "@components/star/Star";
 import { fetchSinglePublicBookAction } from "@features/book/bookAction";
 import { useEffect, useState } from "react";
@@ -134,7 +135,7 @@ const BookLandingPage = () => {
                   <div>{selectedBook.description}</div>
                 </Tab>
                 <Tab eventKey="reviews" title="reviews">
-                  Tab content for Reviews
+                  <Reviews />
                 </Tab>
               </Tabs>
             </Col>
