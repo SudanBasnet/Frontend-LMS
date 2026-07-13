@@ -20,7 +20,7 @@ const CustomCard = ({
         <Card.Text className="book-card-meta">
           {author} - {year}
         </Card.Text>
-        <Link to={"/book/" + slug} className="mt-auto">
+        <Link to={"/book/" + slug} className="mt-auto text-decoration-none">
           <Button variant="dark" className="w-100">
             View Details
           </Button>
@@ -56,7 +56,10 @@ export const CustomListCard = ({
             {description}
           </Card.Text>
         )}
-        <Link to={"/book/" + slug} className="mt-auto align-self-start d-grid">
+        <Link
+          to={"/book/" + slug}
+          className="mt-auto align-self-start d-grid text-decoration-none"
+        >
           <Button variant="dark">View Details</Button>
         </Link>
       </Card.Body>

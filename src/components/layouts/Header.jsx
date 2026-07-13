@@ -13,7 +13,7 @@ import { LuBookOpen, LuGauge } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { logoutAPI } from "../../services/authAPI";
 import { setUser } from "../../features/user/userSlice";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 
@@ -22,6 +22,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const searchRef = useRef("");
 
   const handleOnLogout = async (e) => {
     e.preventDefault();
@@ -41,6 +42,12 @@ const Header = () => {
     dispatch(setUser({}));
     navigate("/");
   };
+
+  const handleOnSearch = (e) => {
+    e.preventDefault();
+    const str = searchRef.current.value;
+    navigate("/all-books?s=" + str);
+  };
   return (
     <Navbar expand="md" className="bg-dark" variant="dark">
       <Container>
@@ -50,15 +57,17 @@ const Header = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <div className="w-100 d-flex justify-content-between flex-column flex-md-row">
-            <div>sd</div>
-            <Form style={{ width: "40%" }}>
+            <div></div>
+            <Form style={{ width: "40%" }} onSubmit={handleOnSearch}>
               <InputGroup className="">
                 <Form.Control
                   placeholder="Search your Book"
                   aria-label="Search your Book"
                   aria-describedby="basic-addon2"
+                  name="s"
+                  ref={searchRef}
                 />
-                <InputGroup.Text id="basic-addon2">
+                <InputGroup.Text id="basic-addon2" as="button">
                   <FaSearch />
                 </InputGroup.Text>
               </InputGroup>
