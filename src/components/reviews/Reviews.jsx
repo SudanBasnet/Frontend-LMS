@@ -1,12 +1,12 @@
 import Star from "@components/star/Star";
-import React from "react";
+import { formatDistance, formatDistanceToNow, subDays } from "date-fns";
 const reviews = [
   {
     title: "this is awesome book",
     rating: 4.5,
     details:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "22-2-2020",
+    createdAt: "2026-2-4",
     reviewedBy: "Sudan Basnet",
   },
   {
@@ -14,7 +14,7 @@ const reviews = [
     rating: 4.5,
     details:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "22-2-2020",
+    createdAt: "2022-2-4",
     reviewedBy: "Sudan Basnet",
   },
   {
@@ -22,7 +22,7 @@ const reviews = [
     rating: 4.5,
     details:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "22-2-2020",
+    createdAt: "2022-3-5",
     reviewedBy: "Sudan Basnet",
   },
   {
@@ -30,7 +30,7 @@ const reviews = [
     rating: 4.5,
     details:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "22-2-2020",
+    createdAt: "2022-3-5",
     reviewedBy: "Sudan Basnet",
   },
   {
@@ -38,7 +38,7 @@ const reviews = [
     rating: 4.5,
     details:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "22-2-2020",
+    createdAt: "2022-3-5",
     reviewedBy: "Sudan Basnet",
   },
   {
@@ -46,7 +46,7 @@ const reviews = [
     rating: 4.5,
     details:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "22-2-2020",
+    createdAt: "2022-3-5",
     reviewedBy: "Sudan Basnet",
   },
 ];
@@ -69,7 +69,11 @@ const Reviews = () => {
             <div className="d-flex gap-3">
               {" "}
               <Star avgRating={r.rating} />
-              <span>6 months ago</span>
+              <span>
+                {formatDistanceToNow(new Date(r.createdAt), {
+                  addSuffix: true,
+                })}
+              </span>
             </div>
 
             <p>{r.details}</p>
