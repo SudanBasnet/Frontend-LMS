@@ -1,5 +1,10 @@
-import { adminFetchAllBookAPI, postNewBookAPI } from "./bookAPI";
-import { setBook } from "./bookSlice";
+import {
+  adminFetchAllBookAPI,
+  fetchAllPublicBookAPI,
+  fetchsinglePublicBookAPI,
+  postNewBookAPI,
+} from "./bookAPI";
+import { setBook, setPublicBook, setSelectedBook } from "./bookSlice";
 
 //!create new book
 export const postNewBookAction = (payload) => async (dispatch) => {
@@ -15,4 +20,16 @@ export const postNewBookAction = (payload) => async (dispatch) => {
 export const adminFetchAllBookAction = () => async (dispatch) => {
   const { status, payload } = await adminFetchAllBookAPI();
   status === "success" && dispatch(setBook(payload));
+};
+
+//!Fetch all public books
+export const fetchAllPublicBookAction = () => async (dispatch) => {
+  const { status, payload } = await fetchAllPublicBookAPI();
+  status === "success" && dispatch(setPublicBook(payload));
+};
+
+//!Fetch single public books
+export const fetchSinglePublicBookAction = (slug) => async (dispatch) => {
+  const { status, payload } = await fetchsinglePublicBookAPI(slug);
+  status === "success" && dispatch(setSelectedBook(payload));
 };

@@ -116,3 +116,168 @@
   transform: translateY(-2px);
   box-shadow: 0 0.65rem 1.4rem rgba(25, 135, 84, 0.28);
 }
+
+/* carousel style */
+.carousel {
+  height: 60vh;
+}
+.carousel img {
+  height: 60vh;
+  object-fit: cover;
+  width: 100%;
+}
+
+.carousel-caption-bg {
+  background-color: #33604c6c;
+  backdrop-filter: blur(3px);
+}
+/* End carousel */
+
+/* breadcrumb selector */
+
+.breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+}
+
+/* review items */
+.review-item {
+  margin-bottom: 2rem;
+  flex-direction: column;
+}
+
+.review-item .right {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .review-item {
+    flex-direction: row;
+  }
+}
+
+.review-item .left div {
+  background: white;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid grey;
+}
+
+/* Book cards */
+.book-card {
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0.75rem 1.75rem rgba(15, 23, 42, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1.25rem 2.5rem rgba(15, 23, 42, 0.14);
+}
+
+.book-card-cover {
+  height: 210px;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.book-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.35rem;
+  box-shadow: 0 0.65rem 1.25rem rgba(15, 23, 42, 0.18);
+}
+
+.book-card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem;
+}
+
+.book-card-title {
+  min-height: 2.7rem;
+  margin-bottom: 0.35rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #111827;
+}
+
+.book-card-meta {
+  min-height: 2.5rem;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+/* Book list cards */
+.book-list-card {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(15, 23, 42, 0.08);
+}
+
+.book-list-card-cover {
+  flex: 0 0 160px;
+  width: 160px;
+  height: 190px;
+  padding: 0.75rem;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-list-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.book-list-card-body {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.book-list-card-description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (max-width: 575.98px) {
+  .book-list-card-cover {
+    flex-basis: 120px;
+    width: 120px;
+    height: 170px;
+  }
+}
