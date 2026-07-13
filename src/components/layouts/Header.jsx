@@ -46,7 +46,7 @@ const Header = () => {
   const handleOnSearch = (e) => {
     e.preventDefault();
     const str = searchRef.current.value;
-    navigate("/all-books?s=" + str);
+    str && navigate("/search?query=" + str);
   };
   return (
     <Navbar expand="md" className="bg-dark" variant="dark">
