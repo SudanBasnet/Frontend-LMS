@@ -1,6 +1,7 @@
 import Reviews from "@components/reviews/Reviews";
 import Star from "@components/star/Star";
 import { fetchSinglePublicBookAction } from "@features/book/bookAction";
+import { setCart } from "@features/book/bookSlice";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -20,7 +21,7 @@ import { Link, useParams } from "react-router-dom";
 const BookLandingPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const { selectedBook } = useSelector((state) => state.bookInfo);
+  const { selectedBook, cart } = useSelector((state) => state.bookInfo);
   const [isLoading, setIsLoading] = useState(true);
   const [showUrl, setshowUrl] = useState(0);
 
@@ -37,6 +38,10 @@ const BookLandingPage = () => {
     fetchBook();
   }, [dispatch, slug]);
 
+  const handleOnAddToCart = () => {
+    dispatch(setCart(selectedBook));
+  };
+  const isBookInTheCart = cart.find((item) => item._id === selectedBook._id);
   return (
     <Container>
       <Row className="my-3">
@@ -121,7 +126,15 @@ const BookLandingPage = () => {
                 <div className="bottom">
                   <hr />
                   <div className="d-grid mb-3">
-                    <Button variant="dark">Add to Borrowing List</Button>
+                    <Button
+                      variant="dark"
+                      onClick={handleOnAddToCart}
+                      disabled={isBookInTheCart}
+                    >
+                      {isBookInTheCart
+                        ? "Book is Already in the cart"
+                        : "Add to Borrowing List"}{" "}
+                    </Button>
                   </div>
                 </div>
               </div>
