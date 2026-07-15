@@ -23,9 +23,19 @@ const bookSlice = createSlice({
     setCart: (state, { payload }) => {
       state.cart = [...state.cart, payload];
     },
+    setRemoveBookFromCart: (state, { payload }) => {
+      state.cart.filter((book) => book._id !== payload);
+      state.cart = state.cart.filter((book) => book._id !== payload);
+    },
   },
 });
 
 const { reducer, actions } = bookSlice;
-export const { setBook, setPublicBook, setSelectedBook, setCart } = actions;
+export const {
+  setBook,
+  setPublicBook,
+  setSelectedBook,
+  setCart,
+  setRemoveBookFromCart,
+} = actions;
 export default reducer;
