@@ -20,7 +20,7 @@ import { BsCart3 } from "react-icons/bs";
 
 const Header = () => {
   const { user } = useSelector((state) => state.userInfo);
-  const { cart } = useSelector((state) => state.bookInfo);
+  const { cart } = useSelector((state) => state.cartInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -41,6 +41,7 @@ const Header = () => {
     //logout from frontend
     sessionStorage.removeItem("accessJWT");
     localStorage.removeItem("refreshJWT");
+    setIsLoggingOut(false);
     dispatch(setUser({}));
     navigate("/");
   };

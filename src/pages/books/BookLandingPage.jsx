@@ -1,7 +1,8 @@
 import Reviews from "@components/reviews/Reviews";
 import Star from "@components/star/Star";
 import { fetchSinglePublicBookAction } from "@features/book/bookAction";
-import { setCart } from "@features/book/bookSlice";
+import { setCart } from "@features/cart/cartSlice";
+
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -17,11 +18,13 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const BookLandingPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const { selectedBook, cart } = useSelector((state) => state.bookInfo);
+  const { selectedBook } = useSelector((state) => state.bookInfo);
+  const { cart } = useSelector((state) => state.cartInfo);
   const [isLoading, setIsLoading] = useState(true);
   const [showUrl, setshowUrl] = useState(0);
 
@@ -39,6 +42,7 @@ const BookLandingPage = () => {
   }, [dispatch, slug]);
 
   const handleOnAddToCart = () => {
+    toast("Book is added in the cart");
     dispatch(setCart(selectedBook));
   };
   const isBookInTheCart = cart.find((item) => item._id === selectedBook._id);
