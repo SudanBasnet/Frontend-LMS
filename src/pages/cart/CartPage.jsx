@@ -1,13 +1,20 @@
 import { Alert, Button, Col, Container, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setRemoveBookFromCart } from "../../features/cart/cartSlice";
+import {
+  emptyCart,
+  setrecentBorrow,
+  setRemoveBookFromCart,
+} from "../../features/cart/cartSlice";
+import { postBorrowAPI } from "@features/cart/cartAPI";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const { cart } = useSelector((state) => state.cartInfo);
   const { user } = useSelector((state) => state.userInfo);
-  const dispatch = useDispatch((state) => state.bookInfo);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   console.log(cart);
   const apiBaseUrl = import.meta.env.VITE_BASE_URL;
   const getImageUrl = (imgUrl = "") =>
@@ -18,9 +25,22 @@ const CartPage = () => {
   const handleOnBookRemove = (_id) => {
     dispatch(setRemoveBookFromCart(_id));
   };
-  const handleOnBorrowing = () => {
-    if (window.confirm("Are you sure you want to borrow these books?")) {
-      navigate("/users/borrow-history");
+  const handleOnBorrowing = async () => {
+    if (confirm("Are you sure you want to borrow these books?")) {
+      const booksArg = cart.map(({ _id, title, imgUrl }) => {
+        return { bookId: _id, bookTitle: title, thumbnail: imgUrl };
+      });
+
+      const pending = postBorrowAPI(booksArg);
+      toast.promise(pending, { pending: "Please wait..." });
+      const { message, status, payload } = await pending;
+
+      toast[status](message);
+
+      dispatch(setrecentBorrow(payload));
+
+      dispatch(emptyCart());
+      navigate("/thank-you");
     }
   };
   return (
