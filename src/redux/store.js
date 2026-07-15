@@ -8,6 +8,7 @@ import storage from "redux-persist/es/storage/index.js";
 const cartPersistConfig = {
   key: "cart",
   storage,
+  whitelist: ["cart"],
 };
 
 const rootReducer = combineReducers({

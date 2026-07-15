@@ -20,6 +20,7 @@ import UserLayout from "@components/layouts/UserLayout";
 import AllBooks from "@pages/books/AllBooks";
 import Search from "@pages/books/Search";
 import CartPage from "@pages/cart/CartPage";
+import ThankYou from "@pages/cart/ThankYou";
 
 const AppRoutes = () => {
   return (
@@ -49,6 +50,7 @@ const AppRoutes = () => {
         <Route path="reviews" element={<ReviewsPage />} />
         <Route path="user-list" element={<UserPage />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="thank-you" element={<ThankYou />} />
       </Route>
     </Routes>
   );

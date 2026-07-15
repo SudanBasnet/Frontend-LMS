@@ -40,7 +40,7 @@ const CartPage = () => {
       dispatch(setrecentBorrow(payload));
 
       dispatch(emptyCart());
-      navigate("/thank-you");
+      navigate("/users/thank-you");
     }
   };
   return (
