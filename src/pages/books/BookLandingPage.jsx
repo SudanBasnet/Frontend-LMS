@@ -1,6 +1,8 @@
 import Reviews from "@components/reviews/Reviews";
 import Star from "@components/star/Star";
 import { fetchSinglePublicBookAction } from "@features/book/bookAction";
+import { setCart } from "@features/cart/cartSlice";
+
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -16,11 +18,13 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const BookLandingPage = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
   const { selectedBook } = useSelector((state) => state.bookInfo);
+  const { cart } = useSelector((state) => state.cartInfo);
   const [isLoading, setIsLoading] = useState(true);
   const [showUrl, setshowUrl] = useState(0);
 
@@ -37,6 +41,11 @@ const BookLandingPage = () => {
     fetchBook();
   }, [dispatch, slug]);
 
+  const handleOnAddToCart = () => {
+    toast("Book is added in the cart");
+    dispatch(setCart(selectedBook));
+  };
+  const isBookInTheCart = cart.find((item) => item._id === selectedBook._id);
   return (
     <Container>
       <Row className="my-3">
@@ -121,7 +130,15 @@ const BookLandingPage = () => {
                 <div className="bottom">
                   <hr />
                   <div className="d-grid mb-3">
-                    <Button variant="dark">Add to Borrowing List</Button>
+                    <Button
+                      variant="dark"
+                      onClick={handleOnAddToCart}
+                      disabled={isBookInTheCart}
+                    >
+                      {isBookInTheCart
+                        ? "Book is Already in the cart"
+                        : "Add to Borrowing List"}{" "}
+                    </Button>
                   </div>
                 </div>
               </div>

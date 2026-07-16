@@ -16,9 +16,11 @@ import { setUser } from "../../features/user/userSlice";
 import { useRef, useState } from "react";
 import { InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
 
 const Header = () => {
   const { user } = useSelector((state) => state.userInfo);
+  const { cart } = useSelector((state) => state.cartInfo);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -39,6 +41,7 @@ const Header = () => {
     //logout from frontend
     sessionStorage.removeItem("accessJWT");
     localStorage.removeItem("refreshJWT");
+    setIsLoggingOut(false);
     dispatch(setUser({}));
     navigate("/");
   };
@@ -48,6 +51,7 @@ const Header = () => {
     const str = searchRef.current.value;
     str && navigate("/search?query=" + str);
   };
+
   return (
     <Navbar expand="md" className="bg-dark" variant="dark">
       <Container>
@@ -109,6 +113,12 @@ const Header = () => {
                   </Link>
                 </>
               )}
+              <Link to="/cart" className="nav-link position-relative">
+                <div className="cart-count position-absolute">
+                  {cart.length}
+                </div>
+                <BsCart3 className="fs-3" />
+              </Link>
             </Nav>
           </div>
         </Navbar.Collapse>

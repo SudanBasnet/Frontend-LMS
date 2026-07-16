@@ -2,6 +2,16 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import a from "@assets/img/a.jpg";
 import { Link } from "react-router-dom";
+
+const getImageUrl = (imgUrl = "") => {
+  if (!/^\/?public\//.test(imgUrl)) {
+    return imgUrl;
+  }
+
+  const imagePath = imgUrl.replace(/^\/?public/, "");
+  return `${import.meta.env.VITE_BASE_URL}${imagePath}`;
+};
+
 const CustomCard = ({
   imgUrl = a,
   title = "Book Title",
@@ -12,7 +22,7 @@ const CustomCard = ({
   return (
     <Card className="book-card w-100 h-100">
       <div className="book-card-cover">
-        <img src={imgUrl} alt={title} className="book-card-img" />
+        <img src={getImageUrl(imgUrl)} alt={title} className="book-card-img" />
       </div>
 
       <Card.Body className="book-card-body">
@@ -43,7 +53,11 @@ export const CustomListCard = ({
   return (
     <Card className="book-list-card d-flex flex-row w-100">
       <div className="book-list-card-cover">
-        <img src={imgUrl} alt={title} className="book-list-card-img" />
+        <img
+          src={getImageUrl(imgUrl)}
+          alt={title}
+          className="book-list-card-img"
+        />
       </div>
 
       <Card.Body className="book-list-card-body">

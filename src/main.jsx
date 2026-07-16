@@ -7,15 +7,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
-import store from "./redux/store.js";
+import store, { persistor } from "./redux/store.js";
+import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-        <ToastContainer />
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <App />
+          <ToastContainer />
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   </StrictMode>,
 );
