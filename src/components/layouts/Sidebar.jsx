@@ -26,7 +26,12 @@ const SideBar = () => {
       </div>
       <div className="p-2">
         <Link className="nav-link" to="/users/borrow-history">
-          Borrow History
+          All Borrow History
+        </Link>
+      </div>
+      <div className="p-2">
+        <Link className="nav-link" to="/users/my-borrow">
+          My Borrow List
         </Link>
       </div>
 
