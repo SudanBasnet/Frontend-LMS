@@ -16,12 +16,13 @@ export const fetchAllBorrowsAPI = async (isAdmin) => {
   return result;
 };
 
-//!borrow API for public
-export const fetchAllBorrowsAPIforuser = async () => {
+//!borrow API for admin
+export const patchReturnBorrowApi = async (payload) => {
   const obj = {
-    url: borrowApiEP + "/user",
-    method: "get",
+    url: borrowApiEP,
+    method: "patch",
     isPrivateCall: true,
+    payload,
   };
   const result = await apiProcessor(obj);
   return result;
