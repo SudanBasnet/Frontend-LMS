@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const BorrowTable = ({ isAdmin }) => {
+  const location = useLocation();
+  const pathname = location.pathname;
   const { allBorrows, myBorrows } = useSelector((state) => state.borrowInfo);
   const borrowsSource = isAdmin ? allBorrows : myBorrows;
   const dispatch = useDispatch();
@@ -47,21 +49,41 @@ const BorrowTable = ({ isAdmin }) => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Status</th>
+            {!pathname.includes("my-borrow") && <th>Status</th>}
             <th>BookTitle</th>
             <th>Thumbnail</th>
             <th>Due Date</th>
             <th>Returned Date</th>
-            <th>Edit</th>
+            {!isAdmin && <th>Action</th>}
           </tr>
         </thead>
         <tbody>
           {filteredBorrows.map(
-            ({ _id, thumbnail, bookTitle, isReturned, dueDate }, i) => (
+            (
+              {
+                _id,
+                thumbnail,
+                bookTitle,
+                isReturned,
+                dueDate,
+                reviewId,
+                bookSlug,
+              },
+              i,
+            ) => (
               <tr key={_id}>
                 <td>{i + 1}</td>
-                <td>TODO</td>
-                <td>{bookTitle}</td>
+                {!pathname.includes("my-borrow") && (
+                  <td>
+                    {isReturned ? "Returned" : "Borrowed"}
+                    {reviewId && " & Left Review"}
+                  </td>
+                )}
+                <td>
+                  <a href={`/book/${bookSlug}`} target="_blank">
+                    {bookTitle}
+                  </a>
+                </td>
 
                 <td>
                   <img src={getImageUrl(thumbnail)} alt="" width="60px" />
@@ -78,14 +100,17 @@ const BorrowTable = ({ isAdmin }) => {
                         ),
                       )} days`}
                 </td>
-
-                <td className="d-flex">
-                  <Link to={"/users/edit-book/" + _id}>
-                    <Button variant="warning">Return Book </Button>
-                    <Button variant="dark">Leave Review </Button>
-                  </Link>
-                  reviewed
-                </td>
+                {!pathname.includes("borrow-history") && (
+                  <td className="d-flex">
+                    {!isReturned && (
+                      <Button variant="warning">Return Book </Button>
+                    )}
+                    {isReturned && !reviewId && (
+                      <Button variant="success">Leave Review </Button>
+                    )}
+                    {reviewId && "Reviewed"}
+                  </td>
+                )}
               </tr>
             ),
           )}
