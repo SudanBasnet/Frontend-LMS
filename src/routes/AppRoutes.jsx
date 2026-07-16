@@ -21,8 +21,12 @@ import AllBooks from "@pages/books/AllBooks";
 import Search from "@pages/books/Search";
 import CartPage from "@pages/cart/CartPage";
 import ThankYou from "@pages/cart/ThankYou";
+import { useSelector } from "react-redux";
 
+const noAccess = <h1> You do not have permission for this page</h1>;
 const AppRoutes = () => {
+  const { user } = useSelector((state) => state.userInfo);
+  const isAdmin = user.role === "admin";
   return (
     <Routes>
       {/* public pages */}
@@ -42,15 +46,26 @@ const AppRoutes = () => {
 
       {/* Private Pages */}
       <Route path="/users" element={<UserLayout />}>
+        {/* All Users pages*/}
         <Route index element={<DashboardPage />} />
-        <Route path="books" element={<Books />} />
-        <Route path="new-book" element={<NewBookPage />} />
-        <Route path="edit-book/:_id" element={<EditBookPage />} />
-        <Route path="borrow-history" element={<BorrowPage />} />
-        <Route path="reviews" element={<ReviewsPage />} />
-        <Route path="user-list" element={<UserPage />} />
+        <Route path="my-borrow" element={<BorrowPage />} />
         <Route path="profile" element={<Profile />} />
         <Route path="thank-you" element={<ThankYou />} />
+
+        {/* Only admin access pages */}
+
+        <Route path="books" element={isAdmin ? <Books /> : noAccess} />
+        <Route path="new-book" element={isAdmin ? <NewBookPage /> : noAccess} />
+        <Route
+          path="edit-book/:_id"
+          element={isAdmin ? <EditBookPage /> : noAccess}
+        />
+        <Route
+          path="borrow-history"
+          element={isAdmin ? <BorrowPage isAdmin /> : noAccess}
+        />
+        <Route path="reviews" element={isAdmin ? <ReviewsPage /> : noAccess} />
+        <Route path="user-list" element={isAdmin ? <UserPage /> : noAccess} />
       </Route>
     </Routes>
   );

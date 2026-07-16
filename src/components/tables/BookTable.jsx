@@ -65,11 +65,7 @@ const BookTable = () => {
                   {status}
                 </td>
                 <td>
-                  <img
-                    src={getImageUrl(imgUrl)}
-                    alt=""
-                    width="60px"
-                  />
+                  <img src={getImageUrl(imgUrl)} alt="" width="60px" />
                 </td>
                 <td>{title}</td>
                 <td>

@@ -17,6 +17,7 @@ import { useRef, useState } from "react";
 import { InputGroup } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { BsCart3 } from "react-icons/bs";
+import { setAllBorrow, setMyBorrow } from "@features/borrow/borrowSlice";
 
 const Header = () => {
   const { user } = useSelector((state) => state.userInfo);
@@ -43,6 +44,8 @@ const Header = () => {
     localStorage.removeItem("refreshJWT");
     setIsLoggingOut(false);
     dispatch(setUser({}));
+    dispatch(setMyBorrow([]));
+    dispatch(setAllBorrow([]));
     navigate("/");
   };
 

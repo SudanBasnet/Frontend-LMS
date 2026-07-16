@@ -27,8 +27,13 @@ const CartPage = () => {
   };
   const handleOnBorrowing = async () => {
     if (confirm("Are you sure you want to borrow these books?")) {
-      const booksArg = cart.map(({ _id, title, imgUrl }) => {
-        return { bookId: _id, bookTitle: title, thumbnail: imgUrl };
+      const booksArg = cart.map(({ _id, title, imgUrl, slug }) => {
+        return {
+          bookId: _id,
+          bookTitle: title,
+          thumbnail: imgUrl,
+          bookSlug: slug,
+        };
       });
 
       const pending = postBorrowAPI(booksArg);
