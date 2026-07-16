@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  allBorrows: {},
+  allBorrows: [],
   myBorrows: [],
 };
 
@@ -13,7 +13,7 @@ const borrowSlice = createSlice({
       state.allBorrows = payload;
     },
     setMyBorrow: (state, { payload }) => {
-      state.allBorrows = payload;
+      state.myBorrows = payload;
     },
   },
 });

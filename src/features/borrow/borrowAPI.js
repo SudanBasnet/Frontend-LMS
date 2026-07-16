@@ -5,9 +5,10 @@ const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 const borrowApiEP = apiBaseUrl + "/api/v1/borrows";
 
 //!borrow API for admin
-export const fetchAllBorrowsAPI = async () => {
+export const fetchAllBorrowsAPI = async (isAdmin) => {
+  const path = isAdmin ? "/admin" : "/user";
   const obj = {
-    url: borrowApiEP + "/admin",
+    url: borrowApiEP + path,
     method: "get",
     isPrivateCall: true,
   };

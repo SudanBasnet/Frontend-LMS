@@ -62,7 +62,7 @@ const AppRoutes = () => {
         />
         <Route
           path="borrow-history"
-          element={isAdmin ? <BorrowPage /> : noAccess}
+          element={isAdmin ? <BorrowPage isAdmin /> : noAccess}
         />
         <Route path="reviews" element={isAdmin ? <ReviewsPage /> : noAccess} />
         <Route path="user-list" element={isAdmin ? <UserPage /> : noAccess} />

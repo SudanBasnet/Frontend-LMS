@@ -1,12 +1,14 @@
 import { getAllBorrowsAction } from "@features/borrow/borrowAction";
+
 import { useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-const BorrowTable = () => {
-  const { allBorrows } = useSelector((state) => state.borrowInfo);
+const BorrowTable = ({ isAdmin }) => {
+  const { allBorrows, myBorrows } = useSelector((state) => state.borrowInfo);
+  const borrowsSource = isAdmin ? allBorrows : myBorrows;
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentTime] = useState(() => Date.now());
@@ -17,11 +19,11 @@ const BorrowTable = () => {
       : imgUrl;
 
   useEffect(() => {
-    dispatch(getAllBorrowsAction());
-  }, [dispatch]);
+    dispatch(getAllBorrowsAction(isAdmin));
+  }, [dispatch, isAdmin]);
 
   const query = searchTerm.trim().toLowerCase();
-  const borrowList = Array.isArray(allBorrows) ? allBorrows : [];
+  const borrowList = Array.isArray(borrowsSource) ? borrowsSource : [];
   const filteredBorrows = borrowList.filter(({ bookTitle = "" }) =>
     bookTitle.toLowerCase().includes(query),
   );
