@@ -2,10 +2,13 @@ import CustomInput from "@components/CustomInput/CustomInput";
 import { Button, Form } from "react-bootstrap";
 import { newReviewInputs } from "@assets/custominputs/reviewInputs";
 import useForm from "@hooks/useForm";
+import { useDispatch } from "react-redux";
+import { postNewReviewAction } from "@features/review/ReviewAction";
 
 const initialState = {};
 
 const NewReviewForm = ({ borrowData }) => {
+  const dispatch = useDispatch();
   const { form, setForm, handleOnChange } = useForm(initialState);
 
   const handleOnSubmit = async (e) => {
@@ -17,6 +20,7 @@ const NewReviewForm = ({ borrowData }) => {
       borrowId: borrowData._id,
       bookId: borrowData.bookId,
     };
+    dispatch(postNewReviewAction(payload));
   };
   return (
     <div className="p-4">
