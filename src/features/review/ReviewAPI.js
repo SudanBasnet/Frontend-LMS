@@ -5,16 +5,16 @@ const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 const borrowApiEP = apiBaseUrl + "/api/v1/reviews";
 
 // //!borrow API for admin
-// export const fetchAllBorrowsAPI = async (isAdmin) => {
-//   const path = isAdmin ? "/admin" : "/user";
-//   const obj = {
-//     url: borrowApiEP + path,
-//     method: "get",
-//     isPrivateCall: true,
-//   };
-//   const result = await apiProcessor(obj);
-//   return result;
-// };
+export const fetchAllReviewAPI = async (isAdmin) => {
+  const path = isAdmin ? "/admin" : "";
+  const obj = {
+    url: borrowApiEP + path,
+    method: "get",
+    isPrivateCall: isAdmin,
+  };
+  const result = await apiProcessor(obj);
+  return result;
+};
 
 //!review API
 export const postnewReviewApi = async (payload) => {

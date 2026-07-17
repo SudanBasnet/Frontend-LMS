@@ -1,23 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  allBorrows: [],
-  myBorrows: [],
+  reviews: [],
 };
 
-const borrowSlice = createSlice({
-  name: "borrow",
+const reviewSlice = createSlice({
+  name: "review",
   initialState,
   reducers: {
-    setAllBorrow: (state, { payload }) => {
-      state.allBorrows = payload;
-    },
-    setMyBorrow: (state, { payload }) => {
-      state.myBorrows = payload;
+    setAllreview: (state, { payload }) => {
+      state.reviews = payload;
     },
   },
 });
 
-const { reducer, actions } = borrowSlice;
-export const { setAllBorrow, setMyBorrow } = actions;
+const { reducer, actions } = reviewSlice;
+export const { setAllreview } = actions;
 export default reducer;
