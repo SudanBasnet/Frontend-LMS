@@ -1,8 +1,9 @@
+import { NewReviewForm } from "@components/forms";
 import {
   getAllBorrowsAction,
   returnBorrowsAction,
 } from "@features/borrow/borrowAction";
-import { setModalShow } from "@features/system/systemSlice";
+import { setModalContent, setModalShow } from "@features/system/systemSlice";
 
 import { useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
@@ -39,7 +40,14 @@ const BorrowTable = ({ isAdmin }) => {
       dispatch(returnBorrowsAction({ _id }));
     }
   };
-  const handleOnLeaveReview = () => {
+  const handleOnLeaveReview = (obj) => {
+    console.log(obj);
+    dispatch(
+      setModalContent({
+        content: <NewReviewForm borrowData={obj} />,
+        title: <h3>Leave your review</h3>,
+      }),
+    );
     dispatch(setModalShow(true));
   };
   return (
@@ -80,6 +88,7 @@ const BorrowTable = ({ isAdmin }) => {
                 dueDate,
                 reviewId,
                 bookSlug,
+                bookId,
               },
               i,
             ) => (
@@ -118,14 +127,17 @@ const BorrowTable = ({ isAdmin }) => {
                       <Button
                         variant="warning"
                         onClick={() => {
-                          handleOnBookReturn(_id);
+                          handleOnBookReturn(_id, bookId);
                         }}
                       >
                         Return Book{" "}
                       </Button>
                     )}
                     {isReturned && !reviewId && (
-                      <Button onClick={handleOnLeaveReview} variant="success">
+                      <Button
+                        onClick={() => handleOnLeaveReview({ _id, bookId })}
+                        variant="success"
+                      >
                         Leave Review{" "}
                       </Button>
                     )}
