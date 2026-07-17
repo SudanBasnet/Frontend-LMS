@@ -3,6 +3,7 @@ import "./App.css";
 import AppRoutes from "./routes/AppRoutes";
 import { useDispatch } from "react-redux";
 import { fetchAllPublicBookAction } from "@features/book/bookAction";
+import { ModalWrapper } from "@components/modalWrapper/ModalWrapper";
 
 function App() {
   const dispatch = useDispatch();
@@ -12,6 +13,9 @@ function App() {
   return (
     <>
       <AppRoutes />
+      <ModalWrapper />
+
+      <ModalWrapper />
     </>
   );
 }

@@ -2,6 +2,7 @@ import {
   getAllBorrowsAction,
   returnBorrowsAction,
 } from "@features/borrow/borrowAction";
+import { setModalShow } from "@features/system/systemSlice";
 
 import { useEffect, useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
@@ -37,6 +38,9 @@ const BorrowTable = ({ isAdmin }) => {
     if (confirm("Are you sure you want to return this book")) {
       dispatch(returnBorrowsAction({ _id }));
     }
+  };
+  const handleOnLeaveReview = () => {
+    dispatch(setModalShow(true));
   };
   return (
     <div>
@@ -121,7 +125,9 @@ const BorrowTable = ({ isAdmin }) => {
                       </Button>
                     )}
                     {isReturned && !reviewId && (
-                      <Button variant="success">Leave Review </Button>
+                      <Button onClick={handleOnLeaveReview} variant="success">
+                        Leave Review{" "}
+                      </Button>
                     )}
                     {reviewId && "Reviewed"}
                   </td>
