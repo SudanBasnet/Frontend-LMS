@@ -1,10 +1,13 @@
 import Star from "@components/star/Star";
+import { updateReviewStatusAction } from "@features/review/ReviewAction";
 import { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ReviewTable = () => {
+  const dispatch = useDispatch();
   const { reviews } = useSelector((state) => state.reviewInfo);
+  const { user } = useSelector((state) => state.userInfo);
   const [searchText, setSearchText] = useState("");
   const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -22,6 +25,11 @@ const ReviewTable = () => {
 
   const handleOnSearch = (e) => {
     setSearchText(e.target.value.toLowerCase());
+  };
+  const handleOnStatusUpdate = (obj) => {
+    if (confirm("Are you sure you want to change the status of this review")) {
+      dispatch(updateReviewStatusAction(user?.role === "admin", obj));
+    }
   };
 
   return (
@@ -121,13 +129,15 @@ const ReviewTable = () => {
                 </td>
                 <td style={{ minWidth: "180px" }}>
                   <div className="d-flex flex-wrap gap-2">
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant={isApproved ? "outline-secondary" : "success"}
-                    >
-                      {isApproved ? "Unapprove" : "Approve"}
-                    </Button>
+                    <Form.Check
+                      className={isApproved ? "text-success" : "text-danger"}
+                      type="switch"
+                      label={isApproved ? "Approved" : "Not approved"}
+                      checked={isApproved}
+                      onChange={() => {
+                        handleOnStatusUpdate({ _id, isApproved: !isApproved });
+                      }}
+                    />
                     <Button type="button" size="sm" variant="danger">
                       Delete
                     </Button>

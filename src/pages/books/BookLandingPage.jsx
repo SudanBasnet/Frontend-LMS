@@ -2,6 +2,7 @@ import Reviews from "@components/reviews/Reviews";
 import Star from "@components/star/Star";
 import { fetchSinglePublicBookAction } from "@features/book/bookAction";
 import { setCart } from "@features/cart/cartSlice";
+import { getAllReviewAction } from "@features/review/ReviewAction";
 
 import { useEffect, useState } from "react";
 import {
@@ -25,6 +26,7 @@ const BookLandingPage = () => {
   const dispatch = useDispatch();
   const { selectedBook } = useSelector((state) => state.bookInfo);
   const { cart } = useSelector((state) => state.cartInfo);
+  const { reviews } = useSelector((state) => state.reviewInfo);
   const [isLoading, setIsLoading] = useState(true);
   const [showUrl, setshowUrl] = useState(0);
 
@@ -32,7 +34,10 @@ const BookLandingPage = () => {
     const fetchBook = async () => {
       setIsLoading(true);
       try {
-        await dispatch(fetchSinglePublicBookAction(slug));
+        await Promise.all([
+          dispatch(fetchSinglePublicBookAction(slug)),
+          dispatch(getAllReviewAction(false)),
+        ]);
       } finally {
         setIsLoading(false);
       }
@@ -46,6 +51,13 @@ const BookLandingPage = () => {
     dispatch(setCart(selectedBook));
   };
   const isBookInTheCart = cart.find((item) => item._id === selectedBook._id);
+  const bookReviews = reviews.filter(
+    (r) => r.bookId?._id === selectedBook?._id,
+  );
+  const averageRating = bookReviews.length
+    ? bookReviews.reduce((total, review) => total + review.rating, 0) /
+      bookReviews.length
+    : 0;
   return (
     <Container>
       <Row className="my-3">
@@ -121,7 +133,10 @@ const BookLandingPage = () => {
                   <div className="my-3 d-flex gap-2">
                     <span>{selectedBook.genre}</span> |{" "}
                     <span>
-                      <Star avgRating={2.5} totalReviews={334} />
+                      <Star
+                        avgRating={averageRating}
+                        totalReviews={bookReviews.length}
+                      />
                     </span>
                   </div>
                   <div>{selectedBook.description.slice(0, 300)}...........</div>
@@ -156,7 +171,7 @@ const BookLandingPage = () => {
                   <div>{selectedBook.description}</div>
                 </Tab>
                 <Tab eventKey="reviews" title="reviews">
-                  <Reviews />
+                  <Reviews reviews={bookReviews} />
                 </Tab>
               </Tabs>
             </Col>

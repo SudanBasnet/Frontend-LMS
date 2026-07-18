@@ -1,86 +1,47 @@
 import Star from "@components/star/Star";
 import { formatDistanceToNow } from "date-fns";
-const reviews = [
-  {
-    title: "this is awesome book",
-    rating: 4.5,
-    details:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "2026-2-4",
-    reviewedBy: "Sudan Basnet",
-  },
-  {
-    title: "this is awesome book",
-    rating: 4.5,
-    details:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "2022-2-4",
-    reviewedBy: "Sudan Basnet",
-  },
-  {
-    title: "this is awesome book",
-    rating: 4.5,
-    details:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "2022-3-5",
-    reviewedBy: "Sudan Basnet",
-  },
-  {
-    title: "this is awesome book",
-    rating: 4.5,
-    details:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "2022-3-5",
-    reviewedBy: "Sudan Basnet",
-  },
-  {
-    title: "this is awesome book",
-    rating: 4.5,
-    details:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "2022-3-5",
-    reviewedBy: "Sudan Basnet",
-  },
-  {
-    title: "this is awesome book",
-    rating: 4.5,
-    details:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, possimus ipsam dolorum quas veniam architecto officia quia vero, quisquam velit deleniti quam enim ipsa commodi quibusdam, ullam accusamus repudiandae alias",
-    createdAt: "2022-3-5",
-    reviewedBy: "Sudan Basnet",
-  },
-];
 
-const Reviews = () => {
+const Reviews = ({ reviews = [] }) => {
+  if (!reviews.length) {
+    return (
+      <div className="text-center text-muted py-4">
+        No approved reviews for this book yet.
+      </div>
+    );
+  }
+
   return (
     <div className="reviews-tab">
-      {reviews.map((r, i) => (
-        <div
-          key={i}
-          className="border rounded p-3 shadow-lg d-flex review-item gap-4"
-        >
-          <div className="left d-flex justify-content-center align-items-center">
-            <div className="d-flex justify-content-center align-items-center fs-3 fw-bold">
-              SB
+      {reviews.map(
+        ({ _id, title, rating, reviewMessage, createdAt, userName }) => (
+          <div
+            key={_id}
+            className="border rounded p-3 shadow-lg d-flex review-item gap-4"
+          >
+            <div className="left d-flex justify-content-center align-items-center">
+              <div className="d-flex justify-content-center align-items-center fs-3 fw-bold">
+                <span>{userName?.split(" ")[0][0].toUpperCase()}</span>
+                {"  "}
+                <span>{userName?.split(" ").at(-1)[0].toUpperCase()}</span>
+              </div>
             </div>
-          </div>
-          <div className="right">
-            <h3>{r.title}</h3>
-            <div className="d-flex gap-3">
-              {" "}
-              <Star avgRating={r.rating} />
-              <span>
-                {formatDistanceToNow(new Date(r.createdAt), {
-                  addSuffix: true,
-                })}
-              </span>
-            </div>
+            <div className="right">
+              <h3>{title}</h3>
+              <div className="d-flex gap-3">
+                <Star avgRating={rating} />
+                <span>
+                  {formatDistanceToNow(new Date(createdAt), {
+                    addSuffix: true,
+                  })}
+                </span>
+              </div>
 
-            <p>{r.details}</p>
-            <div className="text-end"> {r.reviewedBy}</div>
+              <p>{reviewMessage}</p>
+              <div className="text-end">{userName || "Anonymous"}</div>
+            </div>
           </div>
-        </div>
-      ))}
+        ),
+      )}
     </div>
   );
 };

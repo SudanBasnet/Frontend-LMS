@@ -2,13 +2,13 @@ import { apiProcessor } from "../../services/api.js";
 
 // const apiBaseUrl = "http://localhost:8080";
 const apiBaseUrl = import.meta.env.VITE_BASE_URL;
-const borrowApiEP = apiBaseUrl + "/api/v1/reviews";
+const reviewApiEP = apiBaseUrl + "/api/v1/reviews";
 
 // //!borrow API for admin
 export const fetchAllReviewAPI = async (isAdmin) => {
   const path = isAdmin ? "/admin" : "";
   const obj = {
-    url: borrowApiEP + path,
+    url: reviewApiEP + path,
     method: "get",
     isPrivateCall: isAdmin,
   };
@@ -19,8 +19,19 @@ export const fetchAllReviewAPI = async (isAdmin) => {
 //!review API
 export const postnewReviewApi = async (payload) => {
   const obj = {
-    url: borrowApiEP,
+    url: reviewApiEP,
     method: "post",
+    isPrivateCall: true,
+    payload,
+  };
+  const result = await apiProcessor(obj);
+  return result;
+};
+//!update review API
+export const updateReviewStatusAPI = async (payload) => {
+  const obj = {
+    url: reviewApiEP + "/admin",
+    method: "patch",
     isPrivateCall: true,
     payload,
   };
