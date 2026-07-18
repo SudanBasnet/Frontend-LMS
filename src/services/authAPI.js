@@ -1,7 +1,7 @@
 //!all API related to signup,login, token
 
 import { apiProcessor } from "./api.js";
-const apiBaseUrl = "http://localhost:8080";
+const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 const authApiEP = apiBaseUrl + "/api/v1/auth";
 
 export const signUpNewUserAPI = async (payload) => {
@@ -34,6 +34,15 @@ export const signInUserAPI = async (payload) => {
     showToast: true,
   };
   return apiProcessor(obj);
+};
+
+export const googleAuthAPI = async (credential) => {
+  return apiProcessor({
+    url: authApiEP + "/google",
+    method: "post",
+    payload: { credential },
+    showToast: true,
+  });
 };
 
 //!request new accessJWT

@@ -1,6 +1,6 @@
 import { emptyrecentBorrow } from "@features/cart/cartSlice";
 import { useEffect, useRef } from "react";
-import { Alert, Col, Container, Row, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 
@@ -15,8 +15,6 @@ const ThankYou = () => {
     imgUrl.startsWith("public")
       ? apiBaseUrl + imgUrl.slice("public".length)
       : imgUrl;
-  console.log(recentBorrow);
-
   useEffect(() => {
     clearTimeout(clearRecentBorrowTimer.current);
 
@@ -32,21 +30,18 @@ const ThankYou = () => {
   }
 
   return (
-    <Container>
+    <Container className="library-page py-4 py-lg-5">
       <Row>
         <Col>
-          <Alert variant="success" className="mt-5">
-            {" "}
-            <h1 className="text-center ">Thank You</h1>
-          </Alert>
-          <div className="text-center">
-            <Link to="/users/borrow-history">
-              Please go to your account to view your borrowed book{" "}
-            </Link>
+          <div className="borrow-success">
+            <span aria-hidden="true">✓</span>
+            <p>Borrowing confirmed</p>
+            <h1>Enjoy your next chapter.</h1>
+            <Link to="/users/my-borrow">View your borrowed books &rarr;</Link>
           </div>
 
-          <div>
-            <Table striped hover className="mt-5">
+          <div className="workspace-panel bg-white border rounded-3 shadow-sm p-3 p-lg-4 mt-4">
+            <Table responsive hover className="library-table align-middle">
               <thead>
                 <tr>
                   <th>Book</th>
@@ -59,7 +54,7 @@ const ThankYou = () => {
                 {recentBorrow?.map(({ _id, thumbnail, bookTitle, dueDate }) => (
                   <tr key={_id}>
                     <td>
-                      <img src={getImageUrl(thumbnail)} width="60px" />
+                      <img src={getImageUrl(thumbnail)} alt={bookTitle} className="table-book-cover" />
                     </td>
                     <td>{bookTitle}</td>
                     <td>{_id}</td>

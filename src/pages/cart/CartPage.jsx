@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Alert, Badge, Button, Col, Container, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -15,7 +15,6 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(cart);
   const apiBaseUrl = import.meta.env.VITE_BASE_URL;
   const getImageUrl = (imgUrl = "") =>
     imgUrl.startsWith("public")
@@ -49,51 +48,52 @@ const CartPage = () => {
     }
   };
   return (
-    <Container>
+    <Container className="library-page cart-page py-4 py-lg-5">
       <Row>
         <Col>
-          <Table striped hover className="mt-5">
-            <tbody>
-              {cart.map((book) => (
-                <tr key={book._id}>
-                  <td>
-                    <img src={getImageUrl(book.imgUrl)} width="60px" />
-                  </td>
-                  <td>{book.title}</td>
-                  <td>
-                    {" "}
-                    {!book.expectedAvailable
-                      ? "Not Available"
-                      : book.expectedAvailable}{" "}
-                  </td>
-                  <td>
-                    <Button
-                      variant="link"
-                      className=""
-                      onClick={() => handleOnBookRemove(book._id)}
-                    >
-                      Remove
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          <div className="library-page-header library-page-header--compact mb-5">
+            <span>Ready to borrow</span>
+            <h1>Your borrowing bag</h1>
+            <p>Review your selected books before completing the loan.</p>
+          </div>
 
           {cart.length > 0 ? (
-            <div className="text-end">
-              {user._id ? (
-                <Button variant="dark" onClick={handleOnBorrowing}>
-                  Proceed to Borrow
-                </Button>
-              ) : (
-                <Link to="/login" state={{ from: "/cart" }}>
-                  <Button variant="dark">Login to Borrow</Button>
-                </Link>
-              )}
+            <div className="workspace-panel bg-white border rounded-3 shadow-sm p-3 p-lg-4">
+              <Table responsive hover className="library-table align-middle cart-table">
+                <thead><tr><th>Book</th><th>Title</th><th>Availability</th><th>Action</th></tr></thead>
+                <tbody>
+                  {cart.map((book) => (
+                    <tr key={book._id}>
+                      <td><img src={getImageUrl(book.imgUrl)} alt={book.title} className="table-book-cover" /></td>
+                      <td><strong>{book.title}</strong></td>
+                      <td>
+                        <Badge bg={book.expectedAvailable ? "warning" : "success"} text={book.expectedAvailable ? "dark" : undefined}>
+                          {book.expectedAvailable ? `Expected ${book.expectedAvailable.slice(0, 10)}` : "Available"}
+                        </Badge>
+                      </td>
+                      <td>
+                        <Button variant="outline-danger" size="sm" onClick={() => handleOnBookRemove(book._id)}>Remove</Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <div className="cart-checkout d-flex flex-wrap justify-content-end align-items-center gap-4 border-top pt-4 mt-4">
+                <div className="d-flex align-items-center gap-2"><span>Selected books</span><strong className="fs-2 text-success">{cart.length}</strong></div>
+                {user._id ? (
+                  <Button variant="success" onClick={handleOnBorrowing}>Complete borrowing</Button>
+                ) : (
+                  <Link to="/login" state={{ from: "/cart" }}><Button variant="success">Sign in to borrow</Button></Link>
+                )}
+              </div>
             </div>
           ) : (
-            <Alert variant="info">No book added to Cart</Alert>
+            <Alert className="library-empty-state d-flex flex-column justify-content-center text-center" variant="light">
+              <span aria-hidden="true">◇</span>
+              <h2>Your borrowing bag is empty</h2>
+              <p>Browse the catalogue and add a book when you find your next read.</p>
+              <Link to="/all-books" className="btn btn-success mt-3">Explore catalogue</Link>
+            </Alert>
           )}
         </Col>
       </Row>

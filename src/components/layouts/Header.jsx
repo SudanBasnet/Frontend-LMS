@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/LMSlogo.png";
 import { IoHomeOutline } from "react-icons/io5";
 import { IoIosLogIn } from "react-icons/io";
@@ -42,6 +42,7 @@ const Header = () => {
     //logout from frontend
     sessionStorage.removeItem("accessJWT");
     localStorage.removeItem("refreshJWT");
+    window.google?.accounts?.id?.disableAutoSelect();
     setIsLoggingOut(false);
     dispatch(setUser({}));
     dispatch(setMyBorrow([]));
@@ -56,44 +57,50 @@ const Header = () => {
   };
 
   return (
-    <Navbar expand="md" className="bg-dark" variant="dark">
-      <Container>
-        <Link to="/">
-          <img src={logo} width="150px" alt="" />
+    <Navbar expand="lg" className="library-navbar sticky-top" variant="dark">
+      <Container fluid="xl">
+        <Link to="/" className="library-brand" aria-label="LMS home">
+          <img src={logo} alt="Library Management System" />
         </Link>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <div className="w-100 d-flex justify-content-between flex-column flex-md-row">
-            <div></div>
-            <Form style={{ width: "40%" }} onSubmit={handleOnSearch}>
-              <InputGroup className="">
+        <Navbar.Toggle aria-controls="library-navbar-nav" />
+        <Navbar.Collapse id="library-navbar-nav">
+          <div className="library-navbar__content">
+            <Form className="library-search" onSubmit={handleOnSearch}>
+              <InputGroup>
+                <InputGroup.Text className="library-search__icon">
+                  <FaSearch aria-hidden="true" />
+                </InputGroup.Text>
                 <Form.Control
-                  placeholder="Search your Book"
-                  aria-label="Search your Book"
-                  aria-describedby="basic-addon2"
+                  placeholder="Search by title, author or keyword"
+                  aria-label="Search the library catalogue"
                   name="s"
                   ref={searchRef}
                 />
-                <InputGroup.Text id="basic-addon2" as="button">
-                  <FaSearch />
+                <InputGroup.Text
+                  as="button"
+                  type="submit"
+                  className="library-search__submit"
+                  aria-label="Submit search"
+                >
+                  Search
                 </InputGroup.Text>
               </InputGroup>
             </Form>
-            <Nav className="">
-              <Link className="nav-link" to="/">
+            <Nav className="library-nav">
+              <NavLink className="nav-link" to="/" end>
                 <IoHomeOutline /> Home
-              </Link>
-              <Link className="nav-link" to="/all-books">
-                <LuBookOpen /> Books
-              </Link>
+              </NavLink>
+              <NavLink className="nav-link" to="/all-books">
+                <LuBookOpen /> Catalogue
+              </NavLink>
               {user?._id ? (
                 <>
-                  <Link className="nav-link" to="/users">
+                  <NavLink className="nav-link" to="/users">
                     <LuGauge /> Dashboard
-                  </Link>
+                  </NavLink>
 
                   <Link
-                    className="nav-link"
+                    className="nav-link library-logout"
                     to="/"
                     onClick={handleOnLogout}
                     aria-disabled={isLoggingOut}
@@ -109,19 +116,21 @@ const Header = () => {
               ) : (
                 <>
                   <Link className="nav-link" to="/signup">
-                    <IoCreate /> Sign Up
+                    <IoCreate /> Join
                   </Link>
                   <Link className="nav-link" to="/login">
-                    <IoIosLogIn /> LogIn
+                    <IoIosLogIn /> Sign in
                   </Link>
                 </>
               )}
-              <Link to="/cart" className="nav-link position-relative">
-                <div className="cart-count position-absolute">
-                  {cart.length}
-                </div>
-                <BsCart3 className="fs-3" />
-              </Link>
+              <NavLink
+                to="/cart"
+                className="nav-link library-cart position-relative"
+                aria-label={`Borrowing bag with ${cart.length} books`}
+              >
+                <BsCart3 />
+                <span className="cart-count">{cart.length}</span>
+              </NavLink>
             </Nav>
           </div>
         </Navbar.Collapse>

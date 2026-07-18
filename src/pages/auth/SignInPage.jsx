@@ -4,19 +4,22 @@ import useForm from "../../hooks/useForm";
 import { signInUserAPI } from "@services/authAPI";
 import { autoLoginUser, fetchUserAction } from "@features/user/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import CustomInput from "@components/CustomInput/CustomInput";
+import GoogleAuthButton from "@components/auth/GoogleAuthButton";
+import { storeAuthTokens } from "@/utils/authSession";
 
-const initialState = {
-  email: "sdnbasnet@gmail.com",
-  password: "aaAA@@11",
-};
+const initialState = { email: "", password: "" };
 
 const SignInPage = () => {
   const { form, handleOnChange } = useForm(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const showLoaderRef = useRef(true);
+  const [isCheckingSession, setIsCheckingSession] = useState(
+    () =>
+      Boolean(sessionStorage.getItem("accessJWT")) ||
+      Boolean(localStorage.getItem("refreshJWT")),
+  );
   const { user } = useSelector((state) => state.userInfo);
   const location = useLocation();
 
@@ -24,26 +27,21 @@ const SignInPage = () => {
 
   useEffect(() => {
     user?._id ? navigate(path) : dispatch(autoLoginUser());
-    if (
-      sessionStorage.getItem("accessJWT") ||
-      localStorage.getItem("refreshJWT")
-    ) {
-      setTimeout(() => {
-        showLoaderRef.current = false;
-      }, 2000);
-    } else {
-      showLoaderRef.current = false;
-    }
-  }, [user?._id, navigate, dispatch]);
+  }, [user?._id, navigate, dispatch, path]);
+
+  useEffect(() => {
+    if (!isCheckingSession) return undefined;
+
+    const timer = setTimeout(() => setIsCheckingSession(false), 2000);
+    return () => clearTimeout(timer);
+  }, [isCheckingSession]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
     if (form.email && form.password) {
       const { payload } = await signInUserAPI(form);
       if (payload?.accessJWT) {
-        sessionStorage.setItem("accessJWT", payload.accessJWT);
-        localStorage.setItem("refreshJWT", payload.refreshJWT);
+        storeAuthTokens(payload);
         //fetch user api
         dispatch(fetchUserAction());
       }
@@ -51,7 +49,7 @@ const SignInPage = () => {
       alert("both inputs must be filled");
     }
   };
-  if (showLoaderRef.current) {
+  if (isCheckingSession) {
     return (
       <div className="vh-100 d-flex justify-content-center align-items-center">
         <Spinner animation="border" variant="primary" />
@@ -135,6 +133,13 @@ const SignInPage = () => {
               Sign In
             </Button>
           </Form>
+
+          <div className="auth-divider d-flex align-items-center gap-3 my-4">
+            <span className="flex-grow-1 border-top" />
+            <small className="text-secondary text-uppercase">or</small>
+            <span className="flex-grow-1 border-top" />
+          </div>
+          <GoogleAuthButton text="signin_with" destination={path} />
 
           <p className="text-center text-secondary mt-4 mb-0">
             New to the library?{" "}

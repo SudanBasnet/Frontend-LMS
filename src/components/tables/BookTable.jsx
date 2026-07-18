@@ -1,44 +1,41 @@
-import { useEffect, useState } from "react";
-import { Button, Form, Table } from "react-bootstrap";
+import { useState } from "react";
+import { Badge, Button, Form, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const BookTable = () => {
   const { books } = useSelector((state) => state.bookInfo);
-  const [displaybook, setdisplaybook] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const apiBaseUrl = import.meta.env.VITE_BASE_URL;
   const getImageUrl = (imgUrl = "") =>
     imgUrl.startsWith("public")
       ? apiBaseUrl + imgUrl.slice("public".length)
       : imgUrl;
 
-  useEffect(() => {
-    setdisplaybook(books);
-  }, [books]);
-  console.log(displaybook);
+  const displaybook = books.filter((book) =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
   const handleOnSearch = (e) => {
-    const { value } = e.target;
-    const tempArg = books.filter((book) =>
-      book.title.toLowerCase().includes(value.toLowerCase()),
-    );
-    setdisplaybook(tempArg);
+    setSearchTerm(e.target.value);
   };
 
   return (
     <div>
-      <div className="d-flex justify-content-between mb-4">
-        <div>
+      <div className="table-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div className="table-result-count fw-bold">
           {displaybook.length}{" "}
           {displaybook.length > 1 ? "Books Found" : "Book Found"}{" "}
         </div>
         <div className="">
           <Form.Control
             placeholder="Search book by name"
+            value={searchTerm}
             onChange={handleOnSearch}
           />
         </div>
       </div>
-      <Table striped bordered hover>
+      <Table responsive hover className="library-table align-middle">
         <thead>
           <tr>
             <th>#</th>
@@ -57,15 +54,13 @@ const BookTable = () => {
             ) => (
               <tr key={_id}>
                 <td>{i + 1}</td>
-                <td
-                  className={
-                    status === "active" ? "text-success" : "text-danger"
-                  }
-                >
-                  {status}
+                <td>
+                  <Badge bg={status === "active" ? "success" : "danger"}>
+                    {status}
+                  </Badge>
                 </td>
                 <td>
-                  <img src={getImageUrl(imgUrl)} alt="" width="60px" />
+                  <img src={getImageUrl(imgUrl)} alt={title} className="table-book-cover" />
                 </td>
                 <td>{title}</td>
                 <td>
@@ -77,7 +72,7 @@ const BookTable = () => {
                 </td>
                 <td>
                   <Link to={"/users/edit-book/" + _id}>
-                    <Button variant="warning">EDIT </Button>
+                    <Button size="sm" variant="outline-success">Edit</Button>
                   </Link>
                 </td>
               </tr>

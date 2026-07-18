@@ -1,7 +1,7 @@
 import Star from "@components/star/Star";
 import { updateReviewStatusAction } from "@features/review/ReviewAction";
 import { useState } from "react";
-import { Button, Form, Table } from "react-bootstrap";
+import { Badge, Button, Form, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 const ReviewTable = () => {
@@ -34,8 +34,8 @@ const ReviewTable = () => {
 
   return (
     <div>
-      <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <div>
+      <div className="table-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div className="table-result-count fw-bold">
           {displayReviews.length}{" "}
           {displayReviews.length === 1 ? "Review Found" : "Reviews Found"}
         </div>
@@ -46,7 +46,7 @@ const ReviewTable = () => {
           />
         </div>
       </div>
-      <Table striped bordered hover responsive className="align-middle">
+      <Table responsive hover className="library-table align-middle">
         <thead>
           <tr>
             <th>Book</th>
@@ -83,7 +83,7 @@ const ReviewTable = () => {
                         alt={bookId.title || title}
                         width="55"
                         height="75"
-                        className="rounded object-fit-cover"
+                        className="table-book-cover"
                       />
                     ) : (
                       <div
@@ -103,11 +103,9 @@ const ReviewTable = () => {
                 <td style={{ minWidth: "280px", whiteSpace: "normal" }}>
                   <div className="d-flex flex-column gap-2">
                     <div>
-                      <span
-                        className={isApproved ? "text-success" : "text-warning"}
-                      >
+                      <Badge bg={isApproved ? "success" : "warning"} text={isApproved ? undefined : "dark"}>
                         {isApproved ? "Approved" : "Pending"}
-                      </span>
+                      </Badge>
                     </div>
                     <div>
                       <strong>Title:</strong> {title}
@@ -138,7 +136,7 @@ const ReviewTable = () => {
                         handleOnStatusUpdate({ _id, isApproved: !isApproved });
                       }}
                     />
-                    <Button type="button" size="sm" variant="danger">
+                    <Button type="button" size="sm" variant="outline-danger">
                       Delete
                     </Button>
                   </div>

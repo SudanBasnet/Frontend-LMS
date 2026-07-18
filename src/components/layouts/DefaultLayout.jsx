@@ -4,16 +4,11 @@ import Header from "./Header";
 
 const DefaultLayout = () => {
   return (
-    <div>
-      {/* navbar */}
+    <div className="site-shell">
       <Header />
-
-      {/* main body */}
       <main className="main">
         <Outlet />
       </main>
-
-      {/* footer */}
       <Footer />
     </div>
   );

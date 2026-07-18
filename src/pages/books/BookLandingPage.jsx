@@ -7,6 +7,7 @@ import { getAllReviewAction } from "@features/review/ReviewAction";
 import { useEffect, useState } from "react";
 import {
   Alert,
+  Badge,
   Breadcrumb,
   Button,
   Col,
@@ -58,11 +59,24 @@ const BookLandingPage = () => {
     ? bookReviews.reduce((total, review) => total + review.rating, 0) /
       bookReviews.length
     : 0;
+
+  const imageList = selectedBook?.imageList?.length
+    ? selectedBook.imageList
+    : selectedBook?.imgUrl
+      ? [selectedBook.imgUrl]
+      : [];
+  const getImageUrl = (url = "") => {
+    if (/^https?:\/\//.test(url)) return url;
+    const imagePath = url.replace(/^\/?public/, "");
+    return `${import.meta.env.VITE_BASE_URL}${imagePath}`;
+  };
+  const selectedImage = imageList[showUrl] || imageList[0];
+
   return (
-    <Container>
-      <Row className="my-3">
+    <Container className="library-page book-detail-page py-4 py-lg-5">
+      <Row>
         <Col>
-          <Breadcrumb>
+          <Breadcrumb className="library-breadcrumb small mb-4">
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
               Home
             </Breadcrumb.Item>
@@ -95,82 +109,94 @@ const BookLandingPage = () => {
 
       {!isLoading && selectedBook?._id && (
         <>
-          <Row>
-            <Col md={4}>
-              <div className="mb-4" style={{ height: "400px" }}>
-                <img
-                  src={
-                    import.meta.env.VITE_BASE_URL +
-                    selectedBook?.imageList[showUrl].slice(6)
-                  }
-                  alt={selectedBook.title}
-                  // width={"100%"}
-                  className="h-100 w-100 object-fit"
-                />
-              </div>
-              {/* Scrollable thumbnail */}
-
-              <div className="d-flex overflow-auto gap-2">
-                {selectedBook.imageList?.map((url, i) => (
-                  <img
-                    src={import.meta.env.VITE_BASE_URL + url.slice(6)}
-                    key={url}
-                    width={"80px"}
-                    className="img-thumbnail"
-                    onClick={() => setshowUrl(i)}
-                    style={{ cursor: "pointer" }}
-                  />
-                ))}
+          <Row className="book-detail-card g-0 border rounded-3 shadow bg-white overflow-hidden">
+            <Col lg={5}>
+              <div className="book-detail-gallery h-100 p-4 p-xl-5">
+                <div className="book-detail-gallery__main">
+                  {selectedImage ? (
+                    <img
+                      src={getImageUrl(selectedImage)}
+                      alt={selectedBook.title}
+                    />
+                  ) : (
+                    <div className="book-detail-gallery__empty">No cover</div>
+                  )}
+                </div>
+                {imageList.length > 1 && (
+                  <div className="book-detail-thumbnails d-flex justify-content-center gap-2 mt-4 overflow-auto">
+                    {imageList.map((url, i) => (
+                      <button
+                        type="button"
+                        className={i === showUrl ? "active" : ""}
+                        key={url}
+                        onClick={() => setshowUrl(i)}
+                        aria-label={`View image ${i + 1}`}
+                      >
+                        <img src={getImageUrl(url)} alt="" />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </Col>
             <Col>
-              <div className="d-flex flex-column justify-content-between h-100">
-                <div className="top">
+              <div className="book-detail-copy d-flex flex-column justify-content-between h-100 p-4 p-xl-5">
+                <div>
+                  <div className="book-detail-copy__meta d-flex justify-content-between align-items-center gap-3">
+                    <span>{selectedBook.genre || "General collection"}</span>
+                    <Badge bg={selectedBook.expectedAvailable ? "warning" : "success"} text={selectedBook.expectedAvailable ? "dark" : undefined}>
+                      {selectedBook.expectedAvailable ? "On loan" : "Available"}
+                    </Badge>
+                  </div>
                   <h1>{selectedBook.title}</h1>
-                  <div className="fw-bolder">
-                    {selectedBook.author} - {selectedBook.year}
+                  <p className="book-detail-copy__author">
+                    By <strong>{selectedBook.author}</strong> &middot; Published {selectedBook.year}
+                  </p>
+                  <div className="book-detail-copy__rating">
+                    <Star
+                      avgRating={averageRating}
+                      totalReviews={bookReviews.length}
+                    />
                   </div>
-                  <div className="my-3 d-flex gap-2">
-                    <span>{selectedBook.genre}</span> |{" "}
-                    <span>
-                      <Star
-                        avgRating={averageRating}
-                        totalReviews={bookReviews.length}
-                      />
-                    </span>
-                  </div>
-                  <div>{selectedBook.description.slice(0, 300)}...........</div>
+                  <p className="book-detail-copy__description">
+                    {selectedBook.description?.slice(0, 360)}
+                    {selectedBook.description?.length > 360 ? "…" : ""}
+                  </p>
                 </div>
 
-                <div className="bottom">
-                  <hr />
-                  <div className="d-grid mb-3">
+                <div className="book-detail-borrow border-top pt-4 mt-4">
+                  {selectedBook.expectedAvailable && (
+                    <p>
+                      Expected back on <strong>{selectedBook.expectedAvailable.slice(0, 10)}</strong>
+                    </p>
+                  )}
+                  <div className="d-grid">
                     <Button
-                      variant="dark"
+                      variant="success"
+                      className="py-3"
                       onClick={handleOnAddToCart}
                       disabled={
                         selectedBook.expectedAvailable || isBookInTheCart
                       }
                     >
                       {selectedBook.expectedAvailable
-                        ? `Expected Available:${selectedBook.expectedAvailable.slice(0, 10)}`
+                        ? "Currently unavailable"
                         : isBookInTheCart
-                          ? "Book is Already in the cart"
-                          : "Add to Borrowing List"}
+                          ? "Already in borrowing bag"
+                          : "Add to borrowing bag"}
                     </Button>
                   </div>
                 </div>
               </div>
             </Col>
           </Row>
-          <Row className="mt-5 mb-5">
-            <Col className="border p-3 rounded">
-              <h3 className="margin-auto mt-5 text-center">More Details</h3>
-              <Tabs defaultActiveKey="description" className="mb-3">
-                <Tab eventKey="description" title="description">
+          <Row className="mt-4">
+            <Col className="book-detail-tabs bg-white border rounded-3 p-3 p-lg-4">
+              <Tabs defaultActiveKey="description">
+                <Tab eventKey="description" title="About this book">
                   <div>{selectedBook.description}</div>
                 </Tab>
-                <Tab eventKey="reviews" title="reviews">
+                <Tab eventKey="reviews" title={`Reader reviews (${bookReviews.length})`}>
                   <Reviews reviews={bookReviews} />
                 </Tab>
               </Tabs>
