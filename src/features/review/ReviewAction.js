@@ -6,7 +6,7 @@ import {
 } from "./ReviewAPI";
 import { setModalShow } from "@features/system/systemSlice";
 import { getAllBorrowsAction } from "@features/borrow/borrowAction";
-import { setAllreview } from "./reviewSlice";
+import { setAllreview } from "./ReviewSlice";
 
 //!get all reviews
 export const getAllReviewAction = (isAdmin) => async (dispatch) => {
