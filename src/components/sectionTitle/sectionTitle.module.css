@@ -1,13 +1,58 @@
 .titleContainer {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.titleContainer > div:first-child {
+  flex: 0 0 auto;
+}
+
+.titleContainer span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #9b6a3a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.titleContainer h2 {
+  margin: 0;
+  color: #173d34;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.titleContainer a {
+  flex: 0 0 auto;
+  color: #315f52;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .line {
-  background-color: black;
-  flex-grow: 1;
-  height: 3px;
-  box-shadow: 0 4px 10px;
-  margin-top: 5rem 3rem;
+  height: 1px;
+  flex: 1;
+  background: rgba(23, 61, 52, 0.18);
+}
+
+@media (max-width: 575.98px) {
+  .titleContainer {
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .line {
+    display: none;
+  }
+
+  .titleContainer a {
+    margin-left: auto;
+  }
 }

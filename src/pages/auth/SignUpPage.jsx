@@ -4,6 +4,8 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import { signUpInputs } from "@assets/custominputs/userSignupInputs.js";
 import useForm from "../../hooks/useForm.js";
 import { signUpNewUserAPI } from "@services/authAPI.js";
+import GoogleAuthButton from "@components/auth/GoogleAuthButton";
+import { Link } from "react-router-dom";
 
 const initialState = {};
 const SignUpPage = () => {
@@ -12,26 +14,22 @@ const SignUpPage = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
     const { confirmPassword, ...rest } = form;
 
     if (confirmPassword !== rest.password)
       return alert("password do not match");
     const result = await signUpNewUserAPI(rest);
-    console.log(result);
 
     if (result?.status === "success") {
       setForm(initialState);
     }
-
-    console.log(passwordErrors);
   };
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light px-3 py-5">
+    <div className="signin-page library-auth-page d-flex align-items-center justify-content-center px-3 py-5">
       <Form
         onSubmit={handleOnSubmit}
-        className="bg-white border rounded-3 shadow-lg p-4 p-md-5 w-100"
+        className="signin-glass-card signin-glass-form border border-white border-opacity-25 rounded-3 shadow-lg p-4 p-md-5 w-100"
         style={{ maxWidth: "520px" }}
       >
         <div className="mb-4">
@@ -62,8 +60,25 @@ const SignUpPage = () => {
           type="submit"
           disabled={passwordErrors.length}
         >
-          Submit
+          Create account
         </Button>
+
+        <div className="auth-divider d-flex align-items-center gap-3 my-4">
+          <span className="flex-grow-1 border-top" />
+          <small className="text-secondary text-uppercase">or</small>
+          <span className="flex-grow-1 border-top" />
+        </div>
+        <GoogleAuthButton text="signup_with" destination="/users" />
+
+        <p className="text-center text-secondary mt-4 mb-0">
+          Already a member?{" "}
+          <Link
+            className="link-success fw-semibold text-decoration-none"
+            to="/login"
+          >
+            Sign in
+          </Link>
+        </p>
       </Form>
     </div>
   );

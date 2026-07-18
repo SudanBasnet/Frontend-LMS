@@ -6,10 +6,10 @@ import {
 import { setModalContent, setModalShow } from "@features/system/systemSlice";
 
 import { useEffect, useState } from "react";
-import { Button, Form, Table } from "react-bootstrap";
+import { Badge, Button, Form, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const BorrowTable = ({ isAdmin }) => {
   const location = useLocation();
@@ -52,8 +52,8 @@ const BorrowTable = ({ isAdmin }) => {
   };
   return (
     <div>
-      <div className="d-flex justify-content-between mb-4">
-        <div>
+      <div className="table-toolbar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div className="table-result-count fw-bold">
           {filteredBorrows.length}{" "}
           {filteredBorrows.length === 1 ? "Book Found" : "Books Found"}
         </div>
@@ -65,7 +65,7 @@ const BorrowTable = ({ isAdmin }) => {
           />
         </div>
       </div>
-      <Table striped bordered hover>
+      <Table responsive hover className="library-table align-middle">
         <thead>
           <tr>
             <th>#</th>
@@ -96,8 +96,10 @@ const BorrowTable = ({ isAdmin }) => {
                 <td>{i + 1}</td>
                 {!pathname.includes("my-borrow") && (
                   <td>
-                    {isReturned ? "Returned" : "Borrowed"}
-                    {reviewId && " & Left Review"}
+                    <Badge bg={isReturned ? "success" : "warning"} text={isReturned ? undefined : "dark"}>
+                      {isReturned ? "Returned" : "Borrowed"}
+                    </Badge>
+                    {reviewId && <small className="d-block mt-1 text-muted">Review submitted</small>}
                   </td>
                 )}
                 <td>
@@ -107,7 +109,7 @@ const BorrowTable = ({ isAdmin }) => {
                 </td>
 
                 <td>
-                  <img src={getImageUrl(thumbnail)} alt="" width="60px" />
+                  <img src={getImageUrl(thumbnail)} alt={bookTitle} className="table-book-cover" />
                 </td>
                 <td>{dueDate.slice(0, 10)}</td>
                 <td>
@@ -122,10 +124,12 @@ const BorrowTable = ({ isAdmin }) => {
                       )} days`}
                 </td>
                 {!pathname.includes("borrow-history") && (
-                  <td className="d-flex">
+                  <td>
+                    <div className="d-flex flex-wrap gap-2">
                     {!isReturned && (
                       <Button
-                        variant="warning"
+                        variant="outline-warning"
+                        size="sm"
                         onClick={() => {
                           handleOnBookReturn(_id, bookId);
                         }}
@@ -136,12 +140,14 @@ const BorrowTable = ({ isAdmin }) => {
                     {isReturned && !reviewId && (
                       <Button
                         onClick={() => handleOnLeaveReview({ _id, bookId })}
-                        variant="success"
+                        variant="outline-success"
+                        size="sm"
                       >
                         Leave Review{" "}
                       </Button>
                     )}
-                    {reviewId && "Reviewed"}
+                    {reviewId && <Badge bg="success">Reviewed</Badge>}
+                    </div>
                   </td>
                 )}
               </tr>

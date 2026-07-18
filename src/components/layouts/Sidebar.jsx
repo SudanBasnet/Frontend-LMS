@@ -1,51 +1,50 @@
 import Stack from "react-bootstrap/Stack";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import {
+  LuBookMarked,
+  LuBookOpen,
+  LuHistory,
+  LuLayoutDashboard,
+  LuMessageSquareText,
+  LuUserRound,
+  LuUsers,
+} from "react-icons/lu";
 
 const SideBar = () => {
   const { user } = useSelector((state) => state.userInfo);
   const isAdmin = user.role === "admin";
   return (
-    <Stack gap={3}>
-      <div className="p-2">
-        <Link className="nav-link" to="/users">
-          Dashboard
-        </Link>
-      </div>
+    <Stack gap={1} className="library-sidebar__nav">
+      <NavLink className="library-sidebar__link" to="/users" end>
+        <LuLayoutDashboard /> Dashboard
+      </NavLink>
 
-      <div className="p-2">
-        <Link className="nav-link" to="/users/my-borrow">
-          My Borrow List
-        </Link>
-      </div>
+      <NavLink className="library-sidebar__link" to="/users/my-borrow">
+        <LuBookMarked /> My borrowed books
+      </NavLink>
 
-      <div className="p-2">
-        <Link className="nav-link" to="/users/Profile">
-          Profile
-        </Link>
-      </div>
+      <NavLink className="library-sidebar__link" to="/users/profile">
+        <LuUserRound /> My profile
+      </NavLink>
       {isAdmin && (
         <>
-          <div className="p-2">
-            <Link className="nav-link" to="/users/books">
-              Book
-            </Link>
-          </div>
-          <div className="p-2">
-            <Link className="nav-link" to="/users/reviews">
-              reviews
-            </Link>
-          </div>
-          <div className="p-2">
-            <Link className="nav-link" to="/users/user-list">
-              All Users
-            </Link>
-          </div>
-          <div className="p-2">
-            <Link className="nav-link" to="/users/borrow-history">
-              All Borrow History
-            </Link>
-          </div>
+          <div className="library-sidebar__label">Administration</div>
+          <NavLink className="library-sidebar__link" to="/users/books">
+            <LuBookOpen /> Manage books
+          </NavLink>
+          <NavLink className="library-sidebar__link" to="/users/reviews">
+            <LuMessageSquareText /> Review moderation
+          </NavLink>
+          <NavLink className="library-sidebar__link" to="/users/user-list">
+            <LuUsers /> Library members
+          </NavLink>
+          <NavLink
+            className="library-sidebar__link"
+            to="/users/borrow-history"
+          >
+            <LuHistory /> Borrow history
+          </NavLink>
         </>
       )}
     </Stack>

@@ -9,11 +9,15 @@ const ReviewsPage = () => {
     dispatch(getAllReviewAction(user?.role === "admin"));
   }, [dispatch, user?.role]);
   return (
-    <div className="p-3">
-      <h3>Reviews</h3>
-      <hr />
-      <div className="text-end">Reviews</div>
-      <div className="mt-4">
+    <div className="workspace-page container-fluid py-4 px-3 px-lg-4">
+      <header className="workspace-header d-flex flex-wrap justify-content-between align-items-start gap-3 mb-4">
+        <div>
+          <span>Community standards</span>
+          <h1>Review moderation</h1>
+          <p>Approve useful reader feedback before it appears publicly.</p>
+        </div>
+      </header>
+      <div className="workspace-panel bg-white border rounded-3 shadow-sm p-3 p-lg-4">
         <ReviewTable />
       </div>
     </div>

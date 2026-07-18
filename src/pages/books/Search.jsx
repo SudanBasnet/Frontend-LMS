@@ -1,5 +1,4 @@
 import BookListing from "@components/bookListing/BookListing";
-import React, { useEffect } from "react";
 import { Breadcrumb, Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -17,10 +16,10 @@ const Search = () => {
     return text.includes(query.toLowerCase());
   });
   return (
-    <Container>
-      <Row className="my-3">
+    <Container className="library-page py-4 py-lg-5">
+      <Row>
         <Col>
-          <Breadcrumb>
+          <Breadcrumb className="library-breadcrumb small mb-4">
             <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
               Home
             </Breadcrumb.Item>
@@ -28,6 +27,11 @@ const Search = () => {
               Search
             </Breadcrumb.Item>
           </Breadcrumb>
+          <div className="library-page-header library-page-header--compact mb-5">
+            <span>Catalogue search</span>
+            <h1>Results for “{query}”</h1>
+            <p>Books matching your title, description, or keyword search.</p>
+          </div>
         </Col>
       </Row>
       <BookListing bookList={searchBookArg} />
