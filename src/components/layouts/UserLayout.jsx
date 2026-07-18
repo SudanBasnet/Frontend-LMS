@@ -5,6 +5,7 @@ import Header from "./Header";
 import SideBar from "./Sidebar";
 import { AuthRoute } from "../auth/AuthRoute";
 import { useSelector } from "react-redux";
+import { ModalWrapper } from "../modalWrapper/ModalWrapper";
 
 const UserLayout = () => {
   const { user } = useSelector((state) => state.userInfo);
@@ -32,6 +33,8 @@ const UserLayout = () => {
           </main>
         </div>
       </div>
+
+      <ModalWrapper />
 
       {/* footer */}
       <Footer />

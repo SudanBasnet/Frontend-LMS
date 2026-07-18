@@ -3,6 +3,8 @@ import userReducer from "../features/user/userSlice";
 import bookReducer from "../features/book/bookSlice";
 import cartReducer from "../features/cart/cartSlice";
 import borrowReducer from "../features/borrow/borrowSlice";
+import systemReducer from "../features/system/systemSlice";
+import reviewReducer from "../features/review/reviewSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/es/storage/index.js";
 
@@ -16,6 +18,8 @@ const rootReducer = combineReducers({
   userInfo: userReducer,
   bookInfo: bookReducer,
   borrowInfo: borrowReducer,
+  systemInfo: systemReducer,
+  reviewInfo: reviewReducer,
   cartInfo: persistReducer(cartPersistConfig, cartReducer),
 });
 
